@@ -37,12 +37,14 @@ urlpatterns = [
     path('Staff/Password_Change',views.staff_password_change,name='staff_password_change'),
     
     # -------------------------------Zoho Modules section--------------------------------
-    
+    path('newitem/',views.newitem,name='newitem'),
     # GODOWN
     path('list_godown/',views.list_godown,name='list_godown'),
     path('add_godown/',views.add_godown,name='add_godown'),
     path('add_godown_func/',views.add_godown_func,name='add_godown_func'),
     path('overview_page/<int:pk>',views.overview_page,name='overview_page'),
+    path('edit_godown/<int:pk>',views.edit_godown,name='edit_godown'),
+    path('edit_godown_func/',views.edit_godown_func,name='edit_godown_func'),
 
     
   

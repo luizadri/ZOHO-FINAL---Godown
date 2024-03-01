@@ -832,3 +832,105 @@ def overview_page(request,pk):
             }
 
         return render(request, 'godown/overview_page.html', context)
+
+def edit_godown(request,pk):
+
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=log_id)
+        if log_details.user_type == 'Company':
+            dash_details = CompanyDetails.objects.get(login_details=log_details,superadmin_approval=1,Distributor_approval=1)
+            allmodules= ZohoModules.objects.get(company=dash_details,status='New')
+            item_obj = Items.objects.filter(company = dash_details)
+            godown_obj = Godown.objects.get(id = pk)
+            context = {
+            'details': dash_details,
+            'log_details':log_details,
+            'dash_details':dash_details,
+            'allmodules':allmodules,
+            'item_obj':item_obj,
+            'godown_obj':godown_obj,
+            }
+        
+        if log_details.user_type == 'Staff':
+            dash_details = StaffDetails.objects.get(login_details=log_details)
+            allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
+            item_obj = Items.objects.filter(company = dash_details.company)
+            godown_obj = Godown.objects.get(id = pk)
+            context = {
+            'details': dash_details,
+            'log_details':log_details,
+            'dash_details':dash_details,
+            'allmodules':allmodules,
+            'item_obj':item_obj,
+            'godown_obj':godown_obj,
+            }
+
+        return render(request, 'godown/edit_godown.html', context)
+    
+def edit_godown_func(request):
+
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=log_id)
+        if log_details.user_type == 'Company':
+            company = CompanyDetails.objects.get(login_details=log_details,superadmin_approval=1,Distributor_approval=1)
+            if request.method == 'POST':
+                godown_id = request.POST.get('godown_id')
+                date = request.POST.get('Date')
+                item = request.POST.get('Item')
+                gname = request.POST.get('Gname')
+                gaddress = request.POST.get('Gaddress')
+                stock = request.POST.get('Stock')
+                distance = request.POST.get('Distance')
+                item_obj = Items.objects.get(id=item)
+                godown = Godown.objects.get(id=godown_id)
+                godown.date=date
+                godown.item=item_obj
+                godown.stock_keeping=stock
+                godown.godown_name=gname
+                godown.godown_address=gaddress
+                godown.distance=distance
+                godown.stock_in_hand = item_obj.current_stock
+                godown.hsn = item_obj.hsn_code
+                godown.login_details=log_details
+                godown.company = company
+
+                godown.save()
+
+        if log_details.user_type == 'Staff':
+            staff = StaffDetails.objects.get(login_details=log_details)
+            company = staff.company
+            if request.method == 'POST':
+                godown_id = request.POST.get('godown_id')
+                date = request.POST.get('Date')
+                item = request.POST.get('Item')
+                gname = request.POST.get('Gname')
+                gaddress = request.POST.get('Gaddress')
+                stock = request.POST.get('Stock')
+                distance = request.POST.get('Distance')
+                item_obj = Items.objects.get(id=item)
+                godown = Godown.objects.get(id=godown_id)
+                godown.date=date
+                godown.item=item_obj
+                godown.stock_keeping=stock
+                godown.godown_name=gname
+                godown.godown_address=gaddress
+                godown.distance=distance
+                godown.stock_in_hand = item_obj.current_stock
+                godown.hsn = item_obj.hsn_code
+                godown.login_details=log_details
+                godown.company = company
+
+                godown.save()
+        
+        messages.success(request,'Edited Successfully')
+        return redirect('list_godown')
+    
+def newitem(request):
+
+    return render(request,'godown/newitem.html')

@@ -35,8 +35,8 @@
                   </a>
                   <div class="dropdown-menu m-1">
                     <a class="dropdown-item" href="">All</a>
-                    <a class="dropdown-item" onclick="sortTableName()">Employee Name</a>
-                    <a class="dropdown-item" onclick="sortTableSalary()">Employee Salary</a>
+                    <a class="dropdown-item" onclick="sortTableName()">Godown Name</a>
+                    <a class="dropdown-item" onclick="sortTableSalary()">Date</a>
                   </div>
                 </div>
               </div>
@@ -165,24 +165,32 @@
     table = document.getElementById("employeetable");
     switching = true;
     while (switching) {
-      switching = false;
-      rows = table.rows;
-      for (i = 1; i < rows.length - 1; i++) {
-        shouldSwitch = false;
-        x = rows[i].getElementsByTagName("td")[8];
-        y = rows[i + 1].getElementsByTagName("td")[8];
-        if (parseInt(x.innerHTML) > parseInt(y.innerHTML)) {
-          shouldSwitch = true;
-          break;
+        switching = false;
+        rows = table.rows;
+        for (i = 1; i < rows.length - 1; i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("td")[1].textContent.trim();
+            y = rows[i + 1].getElementsByTagName("td")[1].textContent.trim();
+            console.log("x:", x);
+            console.log("y:", y);
+            // Convert dates to Date objects for comparison
+            var dateX = new Date(x.split('-').reverse().join('-'));
+            var dateY = new Date(y.split('-').reverse().join('-'));
+            console.log("dateX:", dateX);
+            console.log("dateY:", dateY);
+            if (dateX > dateY) {
+                shouldSwitch = true;
+                break;
+            }
         }
-      }
-      if (shouldSwitch) {
-        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-        switching = true;
-      }
+        if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
     }
   }
 </script>
+
 
 <script>
   jQuery(document).ready(function ($) {

@@ -17,7 +17,7 @@
                 {% if log_id.user_type == 'Company' %} <li class="breadcrumb-item"><a
                         href="{% url 'company_dashboard' %}" class="text-warning-emphasis">Dashboard</a></li>{% endif %}
                 <li class="breadcrumb-item"><a href="{% url 'list_godown' %}" class="text-warning-emphasis">Godown_list</a></li>
-                <li class="breadcrumb-item" aria-current="page">Add Godown</li>
+                <li class="breadcrumb-item" aria-current="page">Edit Godown</li>
         </nav>
         <div class="row mt-5">
             <div class="col-md-12">
@@ -26,7 +26,7 @@
                         <section>
                             <div class="container pl-5" style="color:white;">
                                 <div class="header pb-5">
-                                    <h2 style="text-align: center;color:white;">ADD GODOWN</h2>
+                                    <h2 style="text-align: center;color:white;">EDIT GODOWN</h2>
                                     <hr class="text-warning font-weight-bold">
                                     {% for message in messages %}
                                     <h5>
@@ -36,17 +36,19 @@
                                     </h5>
                                     {% endfor %}
                                 </div>
-                                <form method="POST" action="{% url 'add_godown_func' %}" enctype="multipart/form-data" id="myForm">
+                                <form method="POST" action="{% url 'edit_godown_func' %}" enctype="multipart/form-data" id="myForm">
                                     {% csrf_token %}
                                     <div class="row">
+                                        
                                         <div class="data  col-lg-12 col-md-12 col-sm-12">
+                                            
                                             <div class="row pb-3">
                                                 <div class="col-4">
                                                     <label for="">Date</label>
                                                 </div>
                                                 <div class="input-container col-sm-6">
                                                     <input type="date" class="form-control text-dark bg-light"
-                                                        name="Date" id="Date" required>
+                                                        name="Date" id="Date" value="{{ godown_obj.date|date:'Y-m-d' }}" required>
                                                 </div>
                                             </div>
                                             <div class="row pb-3">
@@ -55,7 +57,7 @@
                                                 </div>
                                                 <div class="input-container col-sm-6">
                                                     <select class="form-select bg-white text-center" name="Item" id="Item" required>
-                                                        <option value="" selected disabled>-- SELECT --</option>
+                                                        <option value="{{godown_obj.item.id}}" selected >{{godown_obj.item.item_name}}</option>
                                                         {% for i in item_obj %}
                                                             <option value="{{i.id}}">{{i.item_name}}</option>
                                                         {% endfor %}
@@ -77,7 +79,7 @@
                                                 </div>
                                                 <div class="input-container col-sm-6">
                                                     <input type="text" class="form-control text-dark bg-light"
-                                                        name="Gname" id="Gname" required>
+                                                        name="Gname" id="Gname" value="{{godown_obj.godown_name}}" required>
                                                 </div>
                                             </div>
                                             <div class="row pb-3">
@@ -86,7 +88,7 @@
                                                 </div>
                                                 <div class="input-container col-sm-6">
                                                     <input type="text" class="form-control text-dark bg-light"
-                                                        name="Gaddress" id="Gaddress" required>
+                                                        name="Gaddress" id="Gaddress" value="{{godown_obj.godown_address}}" required>
                                                 </div>
                                             </div>
                                             <div class="row pb-3">
@@ -95,7 +97,7 @@
                                                 </div>
                                                 <div class="input-container col-sm-6">
                                                     <input type="text" class="form-control text-dark bg-light"
-                                                        name="Stock" id="Stock" required>
+                                                        name="Stock" id="Stock" value="{{godown_obj.stock_keeping}}" required>
                                                 </div>
                                             </div>
                                             <div class="row pb-3">
@@ -104,26 +106,25 @@
                                                 </div>
                                                 <div class="input-container col-sm-6">
                                                     <input type="number" class="form-control text-dark bg-light"
-                                                        name="Distance" id="Distance" required>
+                                                        name="Distance" id="Distance" value="{{godown_obj.distance}}" required>
                                                 </div>
                                             </div>
-
+                                            <input type="hidden" name="godown_id" value="{{godown_obj.id}}">
                                         </div>
                                     </div>
                                     <br>
                                     <br>
+                                    
 
                                     <hr>
                                     <div class="action-button">
                                         <button class="btn text-light my-2 mx-2" type="submit"
                                             style="background-color: rgb(0, 130, 11); width: 150px; font-size: medium;"
-                                            onclick="validateform()">Save</button>
+                                            onclick="validateform()">Edit</button>
                                         <button class="btn btn-danger my-2 mx-2" type="reset"
                                             style="background-color: rgb(188, 0, 0); width: 150px; font-size: medium;"
                                             onclick="goToTop()">Cancel</button>
-                                        <button class="btn btn-danger my-2 mx-2 text-white" type="button"
-                                            style="background-color: rgb(41, 41, 41); width: 150px; font-size: medium;"
-                                            onclick="">Draft</button>
+                                        
 
                                     </div>
                                 </form>
@@ -134,7 +135,12 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content" style="background-color: #3b3b3b;">
                                         <div class="modal-header">
-                                            
+                                            <h3 class="modal-title text-light" id="exampleModalLabel">Add Blood group
+                                            </h3>
+                                            <button type="button" class="btn close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true" style="font-size: x-large;">&times;</span>
+                                            </button>
                                         </div>
                                         <form action="" method="POST" enctype="multipart/form-data" id="blood1">
                                             {% csrf_token %}
