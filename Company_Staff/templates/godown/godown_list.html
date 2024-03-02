@@ -57,8 +57,8 @@
                   </a>
                   <div class="dropdown-menu m-1">
                     <a class="dropdown-item" onclick="applyFilter('All')">All</a>
-                    <a class="dropdown-item" onclick="applyFilter('Active')">Active</a>
-                    <a class="dropdown-item" onclick="applyFilter('Inactive')">Inactive</a>
+                    <a class="dropdown-item" onclick="applyFilter('Saved')">Saved</a>
+                    <a class="dropdown-item" onclick="applyFilter('Draft')">Draft</a>
                   </div>
                   <a class="btn btn-outline-warning text-right px-3 py-2 flex-sm-row" role="button"
                     href="{% url 'add_godown' %}">
@@ -77,6 +77,7 @@
                       <th style="text-align: center;">DATE</th>
                       <th style="text-align: center;">GODOWN NAME</th>
                       <th style="text-align: center;">QUANTITY IN HAND</th>
+                      <th style="text-align: center;">ACTION</th>
                       <th style="text-align: center;">STATUS</th>
                     </tr>
                   </thead>
@@ -87,7 +88,8 @@
                       <td style="text-align: center;">{{i.date | date:'d-m-Y'}}</td>
                       <td style="text-align: center;">{{i.godown_name}}</td>
                       <td style="text-align: center;">{{i.stock_in_hand}}</td>
-                      <td style="text-align: center;">{{i.emp_number}}</td>
+                      <td style="text-align: center;">{{i.action}}</td>
+                      <td style="text-align: center;">{{i.status}}</td>
                     </tr>
                     {% endfor %}
                   </tbody>
@@ -215,7 +217,7 @@
   function applyFilter(currentFilter) {
     var rows = $("#employeetable tbody tr");
     rows.show();
-    if (currentFilter === "Active" || currentFilter === "Inactive") {
+    if (currentFilter === "Saved" || currentFilter === "Draft") {
       rows.filter(":not(:contains('" + currentFilter + "'))").hide();
     }
   }

@@ -358,6 +358,9 @@ class Godown(models.Model):
     distance = models.IntegerField()
     company = models.ForeignKey(CompanyDetails, on_delete=models.CASCADE,null=True,blank=True)
     login_details = models.ForeignKey(LoginDetails, on_delete=models.CASCADE,null=True,blank=True)
+    status = models.CharField(max_length=200, default = 'Active', null=True)
+    action = models.CharField(max_length=200, null=True)
+    file = models.FileField(upload_to='file/', null=True, blank=True)
 
 
 class GodownHistory(models.Model):
@@ -366,3 +369,9 @@ class GodownHistory(models.Model):
     godown = models.ForeignKey(Godown, on_delete=models.CASCADE,null=True,blank=True)
     date = models.DateField()
     action = models.CharField(max_length = 250)
+
+class GodownComments(models.Model):
+    company = models.ForeignKey(CompanyDetails, on_delete=models.CASCADE,null=True,blank=True)
+    login_details = models.ForeignKey(LoginDetails, on_delete=models.CASCADE,null=True,blank=True)
+    godown = models.ForeignKey(Godown, on_delete=models.CASCADE,null=True,blank=True)
+    comment = models.CharField(max_length = 250)

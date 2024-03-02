@@ -45,6 +45,9 @@ urlpatterns = [
     path('overview_page/<int:pk>',views.overview_page,name='overview_page'),
     path('edit_godown/<int:pk>',views.edit_godown,name='edit_godown'),
     path('edit_godown_func/',views.edit_godown_func,name='edit_godown_func'),
+    path('change_status/<int:pk>',views.change_status,name='change_status'),
+    path('Add_Comment/<int:pk>',views.Add_Comment,name='Add_Comment'),
+    path('Add_File/<int:pk>',views.Add_File,name='Add_File'),
 
     
   

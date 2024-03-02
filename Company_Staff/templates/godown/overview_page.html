@@ -58,8 +58,8 @@
                           </a>
                           <div class="dropdown-menu m-1">
                             <a class="dropdown-item" onclick="applyFilter('All')">All</a>
-                            <a class="dropdown-item" onclick="applyFilter('Active')">Save</a>
-                            <a class="dropdown-item" onclick="applyFilter('Inactive')">Draft</a>
+                            <a class="dropdown-item" onclick="applyFilter('Saved')">Saved</a>
+                            <a class="dropdown-item" onclick="applyFilter('Draft')">Draft</a>
                           </div>
                           <a class="btn btn btn-outline-warning btn-sm " style="text-align: right;" href="{% url 'add_godown' %}"><i class="fa fa-plus "></i></a>
                         </div>
@@ -80,7 +80,10 @@
                                   <label class="text-end d-block">{{i.stock_in_hand}}</label> 
                                 </td>
                                 <td>
-                                  <label class="text-end d-block">{{i.status}}</label> 
+                                  <label class="text-end d-block">{{i.date}}</label> 
+                                </td>
+                                <td>
+                                  <label class="text-end d-block">{{i.action}}</label> 
                                 </td>
                               </tr>
                             {% endfor %}
@@ -110,23 +113,34 @@
                           <a class=" text-dark"  onclick="printSelectedArea()"  >
                             <button class="btn btn-outline-warning btn-sm"  title="Print"> <i class="fas fa-print"></i> </button> 
                           </a>
+                          
+
                           <a class="btn btn-outline-warning btn-sm" href="" data-toggle="modal" data-target="#commentModal" data-toggle="tooltip" title="comment">
                             <i class="far fa-comment"></i>
                           </a>
-                          {% if p.uploaded_file %}
-                          <a class="text-dark" href="{{ p.uploaded_file.url }}" download>
-                            <button class="btn btn-outline-warning btn-sm" title="download"><i class="fas fa-download"></i></button>
-                        </a>
-                          {% else %}
-                          <a class="btn btn-outline-warning btn-sm" href="" data-toggle="modal" title="upload" data-target="#commentModal3" data-toggle="tooltip" title="comment">
+
+                          
+                          <a class="btn btn-outline-warning btn-sm" href="" data-bs-toggle="dropdown" aria-haspopup="true"
+                          data-toggle="tooltip" title="Download Attachments" aria-expanded="false" role="button">
                             <i class="fa-solid fa-upload"></i>
                           </a>
-                          {% endif %}
-                        
+                          <div class="dropdown-menu">
+                            {% if p.file %}
+                              
+                                  <a class="text-center text-decoration-none mx-2 text-black" href="" data-toggle="modal" title="upload" data-target="#commentModal3" data-toggle="tooltip">Attach File</a><br>
+                                  <a class="text-center text-decoration-none mx-2 text-black" href="">Download File</a></td>
+                                
+                              {% else %}
+                              
+                                <a class=" text-decoration-none mx-2 text-black" href="" data-toggle="modal" title="upload" data-target="#commentModal3" data-toggle="tooltip">Attach File</a>
+                              
+                              {% endif %}
+                          </div>
+
                           <a href="" class="  text-dark" >
                             <button class="btn btn-outline-warning btn-sm"  title="Delete"><i class="fas fa-trash-alt"></i></button>
                           </a>
-                          <a class="btn btn-outline-warning btn-sm" href="" id="sts">{{p.status}}</a>
+                          <a class="btn btn-outline-warning btn-sm" href="{% url 'change_status' p.id %}" id="sts">{{p.status}}</a>
                           <a class="btn btn-outline-warning btn-sm" href="" data-toggle="modal" data-target="#commentModal2" data-toggle="tooltip" title="history">
                             <i class="fa-solid fa-clock-rotate-left"></i>
                           </a>
@@ -237,7 +251,7 @@
                               <span aria-hidden="true" style="font-size: x-large;">&times;</span>
                             </button>
                           </div>
-                          <form action="" method="POST" enctype="multipart/form-data">
+                          <form action="{% url 'Add_Comment' p.id %}" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="modal-body" style="background-color: #3b3b3b;">
                               <textarea type="text" class="form-control text-light" name="comments"></textarea>
@@ -258,7 +272,7 @@
                                         <td style="text-align: center;">{{c.comment}}</td>
                                         <td style="text-align: center;">{{c.login_details.first_name}} {{c.login_details.last_name}}</td>
                                         <td style="text-align: center;">
-                                          <a class="text-danger" href="{% url 'delete_comment' c.id p.id%}"><i class="fa fa-trash" style="font-size:20px;"></i></a>
+                                          <a class="text-danger" href=""><i class="fa fa-trash" style="font-size:20px;"></i></a>
                                         </td>
                                       </tr>
                                     {% endfor %}
@@ -304,12 +318,12 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                {% for i in history %}
+                                {% for i in godown_history %}
                                 <tr class="table-row">
                                   <td>{{forloop.counter}}</td>
-                                  <td>{{i.Date}}</td>
-                                  <td>{{i.Action}}</td>
-                                  <td>{{i.login_details.first_name}} {{i.login_details.Last_name}}</td>
+                                  <td>{{i.date}}</td>
+                                  <td>{{i.action}}</td>
+                                  <td>{{i.login_details.first_name}} {{i.login_details.last_name}}</td>
                                 </tr>
                                 {% endfor %}
                               </tbody>
@@ -334,10 +348,10 @@
                             <span aria-hidden="true" style="font-size: x-large;">&times;</span>
                           </button>
                         </div>
-                        <form action="" method="POST" enctype="multipart/form-data">
+                        <form action="{% url 'Add_File' p.id %}" method="POST" enctype="multipart/form-data">
                           {% csrf_token %}
                           <div class="modal-body">
-                            <input type="file" name="file" required class="form-control">
+                            <input type="file" name="file" required class="form-control" accept="file/*">
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-outline-warning" data-dismiss="modal">Close</button>
@@ -486,28 +500,35 @@ var element = document.getElementById('div-to-pdf')
     table = document.getElementById("myTable");
     switching = true;
     while (switching) {
-      switching = false;
-      rows = table.rows;
-      for (i = 0; i < (rows.length - 1); i++) {
-        shouldSwitch = false;
-        x = parseFloat(rows[i].getElementsByTagName("label")[2].textContent.replace('₹', '').trim());
-        y = parseFloat(rows[i + 1].getElementsByTagName("label")[2].textContent.replace('₹', '').trim());
-        if (x > y) {
-          shouldSwitch = true;
-          break;
+        switching = false;
+        rows = table.rows;
+        for (i = 1; i < rows.length - 1; i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("td")[2].textContent.trim();
+            y = rows[i + 1].getElementsByTagName("td")[2].textContent.trim();
+            console.log("x:", x);
+            console.log("y:", y);
+            // Convert dates to Date objects for comparison
+            var dateX = new Date(x.split('-').reverse().join('-'));
+            var dateY = new Date(y.split('-').reverse().join('-'));
+            console.log("dateX:", dateX);
+            console.log("dateY:", dateY);
+            if (dateX > dateY) {
+                shouldSwitch = true;
+                break;
+            }
         }
-      }
-      if (shouldSwitch) {
-        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-        switching = true;
-      }
+        if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
     }
   }
 
   function applyFilter(currentFilter) {
     var rows = $("#myTable tbody tr");
     rows.show();
-    if (currentFilter === "Active" || currentFilter === "Inactive") {
+    if (currentFilter === "Saved" || currentFilter === "Draft") {
       rows.filter(":not(:contains('" + currentFilter + "'))").hide();
     }
   }

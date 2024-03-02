@@ -719,7 +719,6 @@ def add_godown(request):
             dash_details = CompanyDetails.objects.get(login_details=log_details,superadmin_approval=1,Distributor_approval=1)
             allmodules= ZohoModules.objects.get(company=dash_details,status='New')
             item_obj = Items.objects.filter(company = dash_details)
-
             context = {
             'details': dash_details,
             'log_details':log_details,
@@ -759,6 +758,7 @@ def add_godown_func(request):
                 stock = request.POST.get('Stock')
                 distance = request.POST.get('Distance')
                 item_obj = Items.objects.get(id=item)
+                action = request.POST.get('save')
                 godown = Godown(date=date,
                                 item=item_obj,
                                 stock_keeping=stock,
@@ -768,8 +768,17 @@ def add_godown_func(request):
                                 stock_in_hand = item_obj.current_stock,
                                 hsn = item_obj.hsn_code,
                                 login_details=log_details,
-                                company = company)
+                                company = company,
+                                action = action)
                 godown.save()
+
+                godown_history = GodownHistory(company = company,
+                                               login_details=log_details,
+                                               godown=godown,
+                                               date=date,
+                                               action='Created')
+                godown_history.save()
+
 
         if log_details.user_type == 'Staff':
             staff = StaffDetails.objects.get(login_details=log_details)
@@ -782,6 +791,7 @@ def add_godown_func(request):
                 stock = request.POST.get('Stock')
                 distance = request.POST.get('Distance')
                 item_obj = Items.objects.get(id=item)
+                action = request.POST.get('save')
                 godown = Godown(date=date,
                                 item=item_obj,
                                 stock_keeping=stock,
@@ -791,8 +801,17 @@ def add_godown_func(request):
                                 stock_in_hand = item_obj.current_stock,
                                 hsn = item_obj.hsn_code,
                                 login_details=log_details,
-                                company = company)
+                                company = company,
+                                action = action)
                 godown.save()
+
+                godown_history = GodownHistory(company = company,
+                                               login_details=log_details,
+                                               godown=godown,
+                                               date=date,
+                                               action='Created')
+                godown_history.save()
+
         
         messages.success(request,'Added Successfully')
         return redirect('add_godown')
@@ -809,12 +828,16 @@ def overview_page(request,pk):
             allmodules= ZohoModules.objects.get(company=dash_details,status='New')
             godown_obj = Godown.objects.filter(company = dash_details)
             p = Godown.objects.get(id = pk)
+            godown_history = GodownHistory.objects.filter(godown=p)
+            comment = GodownComments.objects.filter(godown=p)
             context = {
             'details': dash_details,
             'log_details':log_details,
             'dash_details':dash_details,
             'godown_obj':godown_obj,
-            'p':p
+            'p':p,
+            'godown_history':godown_history,
+            'comment':comment
             }
         
         if log_details.user_type == 'Staff':
@@ -822,13 +845,17 @@ def overview_page(request,pk):
             godown_obj = Godown.objects.filter(company = dash_details.company)
             allmodules= ZohoModules.objects.get(company=dash_details.company,status='New')
             p = Godown.objects.get(id = pk)
+            godown_history = GodownHistory.objects.filter(godown=p)
+            comment = GodownComments.objects.filter(godown=p)
             context = {
             'details': dash_details,
             'log_details':log_details,
             'dash_details':dash_details,
             'allmodules':allmodules,
             'godown_obj':godown_obj,
-            'p':p
+            'p':p,
+            'godown_history':godown_history,
+            'comment':comment
             }
 
         return render(request, 'godown/overview_page.html', context)
@@ -902,6 +929,13 @@ def edit_godown_func(request):
 
                 godown.save()
 
+                godown_history = GodownHistory(company = company,
+                                               login_details=log_details,
+                                               godown=godown,
+                                               date=date,
+                                               action='Edited')
+                godown_history.save()
+
         if log_details.user_type == 'Staff':
             staff = StaffDetails.objects.get(login_details=log_details)
             company = staff.company
@@ -927,10 +961,75 @@ def edit_godown_func(request):
                 godown.company = company
 
                 godown.save()
+
+                godown_history = GodownHistory(company = company,
+                                               login_details=log_details,
+                                               godown=godown,
+                                               date=date,
+                                               action='Edited')
+                godown_history.save()
         
         messages.success(request,'Edited Successfully')
         return redirect('list_godown')
     
 def newitem(request):
 
-    return render(request,'godown/newitem.html')
+    return render(request,'godown/try.html')
+
+
+def change_status(request, pk):
+
+    godown_obj = Godown.objects.get(id=pk)
+    if godown_obj.status == 'Active':
+        godown_obj.status='Inactive'
+    else:
+        godown_obj.status='Active'
+    godown_obj.save()
+    return redirect('overview_page',pk=pk)
+
+def Add_Comment(request,pk):
+
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        log_details= LoginDetails.objects.get(id=log_id)
+        godown = Godown.objects.get(id=pk)
+        if log_details.user_type == 'Company':
+            company = CompanyDetails.objects.get(login_details=log_details,superadmin_approval=1,Distributor_approval=1)
+            
+            if request.method == 'POST':
+                comments = request.POST.get('comments')
+                comment = GodownComments(
+                                login_details=log_details,
+                                company = company,
+                                godown = godown,
+                                comment = comments)
+                comment.save()
+
+
+        if log_details.user_type == 'Staff':
+            staff = StaffDetails.objects.get(login_details=log_details)
+            company = staff.company
+            if request.method == 'POST':
+                comments = request.POST.get('comments')
+                comment = GodownComments(
+                                login_details=log_details,
+                                company = company,
+                                godown = godown,
+                                comment = comments)
+                comment.save()
+        
+        messages.success(request,'Added Comment Successfully')
+        return redirect('overview_page',pk=pk)
+    
+def Add_File(request, pk):
+
+    godown_obj = Godown.objects.get(id=pk)
+    if request.method == 'POST':
+        file = request.FILES.get('file')
+        godown_obj.file=file
+        godown_obj.save()
+    messages.success(request,'Added File Successfully')
+    return redirect('overview_page',pk=pk)
+
