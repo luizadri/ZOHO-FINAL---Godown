@@ -1,0 +1,365 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+    crossorigin="anonymous"></script>
+<div class="body-wrapper">
+    <div class="container-fluid">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                {% if log_id.user_type == 'Staff' %} <li class="breadcrumb-item"><a href="{% url 'staff_dashboard' %}"
+                        class="text-warning-emphasis">Dashboard</a></li>{% endif %}
+                {% if log_id.user_type == 'Company' %} <li class="breadcrumb-item"><a
+                        href="{% url 'company_dashboard' %}" class="text-warning-emphasis">Dashboard</a></li>{% endif %}
+                <li class="breadcrumb-item"><a href="{% url 'list_godown' %}" class="text-warning-emphasis">Godown_list</a></li>
+                <li class="breadcrumb-item" aria-current="page">Edit Godown</li>
+        </nav>
+
+        <form action="{% url 'Edit_Comment' comment.id %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal-body" style="background-color: #3b3b3b;">
+                <textarea type="text" class="form-control text-light" name="comments" required>{{ comment.comment }}</textarea>
+                <!-- Use the existing comment's value to prepopulate the textarea -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-warning" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-outline-warning">Save</button>
+                <!-- Add additional buttons or functionality as needed -->
+            </div>
+        </form>
+
+        
+            </div>
+        </div>
+        <script>
+            var defaultDate = new Date();
+
+            // Formatting the date to YYYY-MM-DD
+            var formattedDate = defaultDate.toISOString().split('T')[0];
+
+            // Setting the value of the input field
+            document.getElementById("joindate").value = formattedDate;
+        </script>
+        <script>
+            async function uploadBlood() {
+                const form = document.getElementById('blood1'); // Adjust the form ID if needed
+                const formData = new FormData(form);
+
+
+
+                var response = await fetch('add_blood', {
+                    method: 'POST',
+                    body: formData
+                })
+                if (response.ok) {
+                    var result = await response.json()
+                    console.log(result.message)
+                    alert(result.message)
+                    document.getElementById('blood1').reset();
+                    var newOption = document.createElement("option");
+
+                    // Set the value and text for the new option
+                    newOption.value = result.blood;
+                    newOption.text = result.blood;
+
+                    // Add the new option to the select dropdown
+                    document.getElementById("blood").appendChild(newOption);
+                }
+            }
+        </script>
+
+
+
+        <script>
+            function validateform() {
+                var sal = document.getElementById('sal').value;
+                var amnthr = document.getElementById('amnthr').value;
+                var hours = document.getElementById('hours').value;
+                var fsalary = document.getElementById('fsalary').value;
+
+                var dropId = document.getElementById('dropId').value;
+                var acc_no = document.getElementById('acc_no').value;
+                var ifsc = document.getElementById('ifsc').value;
+                var b_name = document.getElementById('b_name').value;
+                var branch = document.getElementById('branch').value;
+                var ttype = document.getElementById('ttype').value;
+
+                var tds = document.getElementById('tds').value;
+                var pora = document.getElementById('pora').value;
+                var pcnt = document.getElementById('pcnt').value;
+                var amnt = document.getElementById('amnt').value;
+
+                if (sal === 'Variable') {
+                    if (amnthr === '') {
+                        alert('Add Amount per Hour');
+                        return false;
+                    }
+                    if (hours === '') {
+                        alert('Add Total Amount Worked');
+                        return false;
+                    }
+                } else {
+                    if (fsalary === '') {
+                        alert('Add Salary');
+                        return false;
+                    }
+                }
+
+                if (dropId === '1') {
+                    if (acc_no === '') {
+                        alert('Add an Account Number');
+                        return false;
+                    }
+                    if (ifsc === '') {
+                        alert('Add IFSC code');
+                        return false;
+                    }
+                    if (b_name === '') {
+                        alert('Add Bank Name');
+                        return false;
+                    }
+                    if (branch === '') {
+                        alert('Add Branch Name');
+                        return false;
+                    }
+                    if (ttype === '') {
+                        alert('Select a Transaction Type');
+                        return false;
+                    }
+                }
+
+                if (tds === '1') {
+                    if (pora === '') {
+                        alert('Select TDS Amount Type');
+                        return false;
+                    } else if (pora === 'Percentage') {
+                        if (pcnt === '') {
+                            alert('Add Percentage of TDS');
+                            return false;
+                        }
+                    } else if (pora === 'Amount') {
+                        if (amnt === '') {
+                            alert('Add TDS Amount');
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
+            }
+        </script>
+
+        <script>
+            const input = document.getElementById("an");
+            input.addEventListener("input", () => input.value = formatNumber(input.value.replaceAll(" ", "")));
+            const formatNumber = (number) => number.split("").reduce((seed, next, index) => {
+                if (index !== 0 && !(index % 4)) seed += " ";
+                return seed + next;
+            }, "");
+        </script>
+
+        <script>
+            var loadFile = function (event) {
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var output = document.getElementById('img');
+                    output.src = reader.result;
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            };
+        </script>
+
+        <script>
+            function goToTop() {
+                document.body.scrollTop = 0; // For Safari
+                document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+            }
+
+            function bankdisplay() {
+                var e = document.getElementById("dropId").value;
+                if (e == 0) {
+                    document.getElementById("bank").style.display = 'none'
+                    document.getElementById("acc_no").value = ''
+                    document.getElementById("ifsc").value = ''
+                    document.getElementById("b_name").value = ''
+                    document.getElementById("branch").value = ''
+                    document.getElementById("ttype").value = ''
+                }
+                else {
+                    document.getElementById("bank").style.display = 'block'
+                }
+            }
+
+            function salFunction() {
+                var e = document.getElementById("sal");
+                var sal = e.value;
+                if (sal == 'Fixed' || sal == 'Temporary') {
+                    document.getElementById("fixed").style.display = 'block'
+                    document.getElementById("variable").style.display = 'none'
+                    document.getElementById("amnthr").value = 0
+                    document.getElementById("hours").value = 0
+                    document.getElementById("vsalary").value = 0
+                }
+                else if (sal == 'Variable') {
+                    document.getElementById("variable").style.display = 'block'
+                    document.getElementById("fixed").style.display = 'none'
+                    document.getElementById("fsalary").value = 0
+                }
+            }
+
+            function calculateAmount() {
+                var a = document.getElementById("amnthr").value;
+                var h = document.getElementById("hours").value;
+                var tot = h * a;
+                document.getElementById('vsalary').value = tot;
+            }
+
+            function tdsFunction() {
+                var e = document.getElementById("tds");
+                var sal = e.value;
+                if (sal == '1') {
+                    document.getElementById("tds-div").style.display = 'block'
+                }
+                else {
+                    document.getElementById("tds-div").style.display = 'none'
+                    document.getElementById("pora").value = 0
+                    document.getElementById("pcnt").value = 0
+                    document.getElementById("amnt").value = 0
+                }
+            }
+
+            function tdsFunction2() {
+                var e = document.getElementById("pora");
+                var sal = e.value;
+                if (sal == 'Percentage') {
+                    document.getElementById("p").style.display = 'block';
+                    document.getElementById("a").style.display = 'none';
+                    document.getElementById("amnt").value = 0
+                }
+                else if (sal == 'Amount') {
+                    document.getElementById("a").style.display = 'block';
+                    document.getElementById("p").style.display = 'none'
+                    document.getElementById("pcnt").value = 0
+                }
+            }
+
+            function emailvalidate() {
+                var email = document.getElementById('email')
+                var error = document.getElementById('error')
+                if (!email.value.match(/^[A-Za-z\._\-0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)) {
+                    error.style.fontSize = ".8rem"
+                    error.innerHTML = "*Please enter a valid email"
+                    return false;
+                }
+                error.innerHTML = ""
+                return true;
+            }
+
+            function phoneValidate(phn, pherror) {
+                if (!phn.value.match(/^[6-9]\d{9}$/)) {
+                    pherror.style.display = "block"
+                    pherror.style.fontSize = ".8rem"
+                    pherror.innerHTML = "*Please enter a valid phone number"
+                    return false;
+                }
+                pherror.style.display = "none"
+                pherror.innerHTML = ""
+                return true;
+            }
+
+            function empValidation(emp) {
+                emp.addEventListener("input", function () {
+                    emp.value = emp.value.toUpperCase();
+                });
+            }
+
+            inputvalue = document.getElementById('ifsc')
+            inputvalue.addEventListener("input", function () {
+                inputvalue.value = inputvalue.value.toUpperCase();
+            });
+            const inputFields = document.querySelectorAll("input[type='text']");
+            inputFields.forEach(function (input) {
+                input.addEventListener("input", function () {
+                    const inputValue = input.value;
+                    input.value = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
+                });
+            });
+
+            document.getElementById("an").addEventListener("input", function () {
+                const input = this.value;
+                if (input.length > 14) {
+                    this.value = input.slice(0, 14);
+                }
+            });
+
+            document.getElementById("acc_no").addEventListener("input", function () {
+                const input = this.value;
+                if (input.length > 15) {
+                    this.value = input.slice(0, 15);
+                }
+            });
+
+            $(document).ready(function () {
+                $("#filladdress").on("click", function () {
+                    if (this.checked) {
+                        $("#adrs1").val($("#padrs1").val());
+                        $("#adrs2").val($("#padrs2").val());
+                    }
+                    else {
+                        $("#adrs1").val('');
+                        $("#adrs2").val('');
+                    }
+                });
+            });
+
+            function calculateAge() {
+                const dobInput = document.getElementById("dob");
+                const selectedDateOfBirth = new Date(dobInput.value);
+                const currentDate = new Date();
+                const age = currentDate.getFullYear() - selectedDateOfBirth.getFullYear();
+                const ageInput = document.getElementById("age");
+                ageInput.value = age;
+            }
+            function clearaddreass(id) {
+                document.getElementById('filladdress').checked = false
+                if (id == 'padrs1' || id == 'padrs2') {
+                    $("#adrs1").val('');
+                    $("#adrs2").val('');
+                }
+            }
+        </script>
+
+
+    </div>
+</div>
+
+
+
+<script>
+    // Function to make the alert blink
+    function blink() {
+        $('#alertMessage').fadeOut(1000).fadeIn(1000, blink);
+    }
+
+    // Call the blink function when the page loads
+    $(document).ready(function () {
+        blink();
+    });
+</script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    {% for msg in messages %}
+    swal({
+        title: "{{msg}}",
+        text: "{{msg.tags}}",
+        icon: "{{msg.tags}}",
+    });
+    {% endfor %}
+</script>
+
+{% endblock %}

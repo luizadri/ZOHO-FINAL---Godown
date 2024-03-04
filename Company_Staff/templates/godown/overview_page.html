@@ -85,6 +85,7 @@
                                 <td>
                                   <label class="text-end d-block">{{i.action}}</label> 
                                 </td>
+                                
                               </tr>
                             {% endfor %}
                           </tbody>
@@ -121,14 +122,14 @@
 
                           
                           <a class="btn btn-outline-warning btn-sm" href="" data-bs-toggle="dropdown" aria-haspopup="true"
-                          data-toggle="tooltip" title="Download Attachments" aria-expanded="false" role="button">
+                          data-toggle="tooltip" title="Attach File" aria-expanded="false" role="button">
                             <i class="fa-solid fa-upload"></i>
                           </a>
                           <div class="dropdown-menu">
                             {% if p.file %}
                               
                                   <a class="text-center text-decoration-none mx-2 text-black" href="" data-toggle="modal" title="upload" data-target="#commentModal3" data-toggle="tooltip">Attach File</a><br>
-                                  <a class="text-center text-decoration-none mx-2 text-black" href="">Download File</a></td>
+                                  <a class="text-center text-decoration-none mx-2 text-black" href="{% url 'file_download' p.id %}">Download File</a></td>
                                 
                               {% else %}
                               
@@ -137,14 +138,18 @@
                               {% endif %}
                           </div>
 
-                          <a href="" class="  text-dark" >
+                          <a href="{% url 'delete_godown' p.id %}" class="  text-dark" >
                             <button class="btn btn-outline-warning btn-sm"  title="Delete"><i class="fas fa-trash-alt"></i></button>
                           </a>
                           <a class="btn btn-outline-warning btn-sm" href="{% url 'change_status' p.id %}" id="sts">{{p.status}}</a>
+                          {% if p.action == 'Draft' %}
+                          <a class="btn btn-outline-warning btn-sm" href="{% url 'change_action' p.id %}" id="sts">{{p.action}}</a>
+                          {% endif %}
                           <a class="btn btn-outline-warning btn-sm" href="" data-toggle="modal" data-target="#commentModal2" data-toggle="tooltip" title="history">
                             <i class="fa-solid fa-clock-rotate-left"></i>
                           </a>
-                            <a class="btn btn-outline-warning dropdown-toggle btn-sm" href="#" role="button" title="share" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="btn btn-outline-warning dropdown-toggle btn-sm" href="#" role="button" title="share" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true"
+                            data-toggle="tooltip" aria-expanded="false">
                               <i class="fa-solid fa-share-nodes"></i>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -234,6 +239,12 @@
                                 <p class="bold " style="max-width: 15rem;word-wrap: break-word;">{{p.distance}}</p>
                               </div>
                             </div>
+                            <div class="row mt-1">
+                              <div class="col-5"><p  for="">Status:</p></div>
+                              <div class="col-7">
+                                <p class="bold " style="max-width: 15rem;word-wrap: break-word;">{{p.status}}</p>
+                              </div>
+                            </div>
                             
               
                           </div>
@@ -254,7 +265,7 @@
                           <form action="{% url 'Add_Comment' p.id %}" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="modal-body" style="background-color: #3b3b3b;">
-                              <textarea type="text" class="form-control text-light" name="comments"></textarea>
+                              <textarea type="text" class="form-control text-light" name="comments" required></textarea>
                               <div class="container-fluid">
                                 <table class="table  text-white" style="margin:3px; background-color: #000000;">
                                   <thead>
@@ -262,6 +273,7 @@
                                       <th style="text-align: center; font-size: large;">sl no.</th>
                                       <th style="text-align: center; font-size: large;">Comments</th>
                                       <th style="text-align: center; font-size: large;">By</th>
+                                      <!-- <th style="text-align: center; font-size: large;">Edit</th> -->
                                       <th style="text-align: center; font-size: large;">Delete</th>
                                     </tr>
                                   </thead>
@@ -271,8 +283,11 @@
                                         <td style="text-align: center;">{{forloop.counter }}</td>
                                         <td style="text-align: center;">{{c.comment}}</td>
                                         <td style="text-align: center;">{{c.login_details.first_name}} {{c.login_details.last_name}}</td>
+                                        <!-- <td style="text-align: center;">
+                                          <a class="text-warning" href=""><i class="fa fa-edit" style="font-size:20px;"></i></a>
+                                        </td> -->
                                         <td style="text-align: center;">
-                                          <a class="text-danger" href=""><i class="fa fa-trash" style="font-size:20px;"></i></a>
+                                          <a class="text-danger" href="{% url 'Delete_Comment' c.id %}"><i class="fa fa-trash" style="font-size:20px;"></i></a>
                                         </td>
                                       </tr>
                                     {% endfor %}
@@ -288,6 +303,7 @@
                         </div>
                       </div>
                     </div>
+                    
                     <!--------------------------------------------------------------------->
                     <div class="modal fade" id="commentModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  aria-hidden="true" style="margin-top: 8vh;">
                       <div class="modal-dialog" role="document">
@@ -371,10 +387,10 @@
                             <span aria-hidden="true" style="font-size: x-large;">&times;</span>
                           </button>
                         </div>
-                        <form action="" method="POST" enctype="multipart/form-data">
+                        <form action="{% url 'shareemail' p.id %}" method="POST" enctype="multipart/form-data">
                           {% csrf_token %}
                           <div class="modal-body">
-                            <input type="email" name="email" required style="color:white;" class="form-control">
+                            <input type="email" name="email" placeholder="Email ID" required style="color:white;" class="form-control">
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-outline-warning" data-dismiss="modal">Close</button>

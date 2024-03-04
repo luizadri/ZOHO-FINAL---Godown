@@ -46,9 +46,20 @@ urlpatterns = [
     path('edit_godown/<int:pk>',views.edit_godown,name='edit_godown'),
     path('edit_godown_func/',views.edit_godown_func,name='edit_godown_func'),
     path('change_status/<int:pk>',views.change_status,name='change_status'),
+    path('change_action/<int:pk>',views.change_action,name='change_action'),
     path('Add_Comment/<int:pk>',views.Add_Comment,name='Add_Comment'),
+    path('Delete_Comment/<int:pk>',views.Delete_Comment,name='Delete_Comment'),
     path('Add_File/<int:pk>',views.Add_File,name='Add_File'),
-
+    path('file_download/<int:pk>',views.file_download,name='file_download'),
+    path('shareemail/<int:pk>',views.shareemail,name='shareemail'),
+    path('Add_Item/',views.Add_Item,name='Add_Item'),
+    path('godownmodal_unit/',views.godownmodal_unit,name='godownmodal_unit'),
+    path('godownunit_dropdown/',views.godownunit_dropdown,name='godownunit_dropdown'),
+    path('Add_Account/',views.Add_Account,name='Add_Account'),
+    path('Add_Item_Edit/<int:pk>',views.Add_Item_Edit,name='Add_Item_Edit'),
+    path('godownmodal_unit_edit/<int:pk>',views.godownmodal_unit_edit,name='godownmodal_unit_edit'),
+    path('Add_Account_Edit/<int:pk>',views.Add_Account_Edit,name='Add_Account_Edit'),
+    path('delete_godown/<int:pk>',views.delete_godown,name='delete_godown'),
     
   
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),

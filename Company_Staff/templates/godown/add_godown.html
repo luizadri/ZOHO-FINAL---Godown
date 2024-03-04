@@ -301,12 +301,12 @@ li{
                                           <p style="color: chocolate;">{{m}}</p>
                                           {% endfor %}
                                     
-                                          <form action="" method="POST" id="add" style="padding-left: 20px;">
+                                          <form action="{% url 'Add_Item' %}" method="POST" id="add" style="padding-left: 20px;">
                                             {% csrf_token%}
                                             
                                             <h3 class="mb-3 text-white " style="font-size: 2rem;"></h3>
                                             
-                                            <fieldset class="form-group" >
+                                            <fieldset class="form-group " >
                                                 <div class="row">
                                                   <hr>
                                                  
@@ -328,7 +328,7 @@ li{
                                             <div class="form-group row">
                                                 <label  class="col-sm-2 col-form-label " style="color: aliceblue;">Name *</label>
                                                 <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
-                                                  <input required type="text" class="form-control bg-white" name="name" id="nameInput" style="color: aliceblue;" placeholder="Enter Item Name">  
+                                                  <input required type="text" class="form-control bg-white " name="name" id="nameInput" style="color: rgb(0, 0, 0);" placeholder="Enter Item Name">  
                                                 </div>
                                               </div>
                                               <br>
@@ -336,7 +336,7 @@ li{
                                                 <label class="col-sm-2 col-form-label" style="color: aliceblue;">Unit <i class="fa fa-question-circle"></i></label>
                                                 <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
                                                     <div class="d-flex align-items-center">
-                                                        <select name="unit" class="form-select bg-white" id="selunit"  style="background-color: black; color: white;border-radius: 5px;"  >
+                                                        <select name="unit" class="form-select bg-white" id="selunit"  style="background-color: black; color: rgb(0, 0, 0);border-radius: 5px;"  >
                                                           {% for i in units %}
                                                             <option value={{i.id}}>{{i.unit_name}}</option>
                                                           {% endfor %}
@@ -348,7 +348,7 @@ li{
                                                           });
                                                           </script>                        
                                                            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" defer ></script>
-                                        <a class="btn btn-outline-warning py-2" style="cursor: pointer;" data-toggle="modal" data-target="#unitmodal" style="height: 38px; margin-right: 3px;">+</a>
+                                                    <a class="btn btn-outline-warning py-2" style="cursor: pointer;" data-toggle="modal" data-target="#unitmodal" style="height: 38px; margin-right: 3px;">+</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -356,7 +356,7 @@ li{
                                             <div class="form-group row">
                                                 <label class="col-sm-2 col-form-label" style="color: aliceblue;">HSN Code</label>
                                                 <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
-                                                    <input required type="text" class="form-control bg-white" name="hsn" required id="myInputField" style="color: aliceblue;" placeholder="Enter six digit HSN code" oninput="validateInput()">
+                                                    <input required type="text" class="form-control bg-white" name="hsn" required id="myInputField" style="color: rgb(0, 0, 0);" placeholder="Enter six digit HSN code" oninput="validateInput()">
                                                     <div id="validationResult"></div>
                                                 </div>
                                             </div>
@@ -384,7 +384,7 @@ li{
                                               
                                                   <div id="select1_div" style="display: none;">
                                                     <label for="select1">Intra-State TAX</label><br> <br>
-                                                    <select name="intra" class="form-control" id="select1" style="background-color: black; color: white;">
+                                                    <select name="intra" class="form-select" id="select1" style="background-color: rgb(255, 255, 255); color:rgb(0, 0, 0);">
                                                         <option value="0">GST0[0%]</option>
                                                         <option value="3">GST3[3%]</option>
                                                         <option value="5">GST5[5%]</option>
@@ -398,7 +398,7 @@ li{
                                                 <div class="col-md-6">
                                                   <div id="select2_div" style="display: none;">
                                                     <label for="select2">Inter-State TAX</label> <br><br>
-                                                    <select name="inter" class="form-control " id="select2" style="background-color: black; color: white;">
+                                                    <select name="inter" class="form-select " id="select2" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);">
                                                       <option value="0">IGST0[0%]</option>
                                                       <option value="5">IGST3[3%]</option>
                                                       <option value="5">IGST5[5%]</option>
@@ -421,7 +421,7 @@ li{
                                                         <div class="input-group-prepend">
                                                           <div class="input-group-text text-white" style="background-color: black;">INR</div>
                                                         </div>
-                                                        <input required type="text" name="sel_price" style="color: #ede4e4;" class="form-control bg-white">
+                                                        <input required type="text" name="sel_price" style="color: #000000;" class="form-control bg-white">
                                                       </div>
                                                     </div>
                                                   </div>
@@ -430,7 +430,7 @@ li{
                                                   <div class="form-group row">
                                                     <label  class="col-sm-2 col-form-label" style="color: aliceblue;">Account *</label>
                                                     <div class="col-sm-10 col-md-7 col-9 ml-5">
-                                                      <select name="sel_acc" class="form-select bg-white " style="background-color: black; color: white;">
+                                                      <select name="sel_acc" class="form-select " style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);">
                                                         <option value=" ">--Select Account--</option>
                                                         <option value="General Income">General Income</option>
                                                         <option value="Interest Income">Interest Income</option>
@@ -447,7 +447,7 @@ li{
                                                   <div class="form-group row">
                                                     <label  class="col-sm-2 col-form-label" style="color: aliceblue;">Description </label>
                                                     <div class="col-sm-10 col-md-7 col-9 ml-5">
-                                                      <input  type="text" style="color: #ede4e4;" name="sel_desc" class="form-control bg-white" placeholder="Enter Discription">
+                                                      <input  type="text" style="color: #000000;" name="sel_desc" class="form-control bg-white" placeholder="Enter Discription">
                                                     </div>
                                                   </div>
                                                                         
@@ -462,7 +462,7 @@ li{
                                                         <div class="input-group-prepend">
                                                           <div class="input-group-text text-white" style="background-color: black;">INR</div>
                                                         </div>
-                                                        <input required type="text" style="color: #ede4e4;" class="form-control bg-white " name="cost_price" >
+                                                        <input required type="text" style="color: #000000;" class="form-control bg-white " name="cost_price" >
                                                       </div>
                                                     </div>
                                                   </div>
@@ -472,7 +472,7 @@ li{
                                                     <label class="col-sm-2 col-form-label" style="color: aliceblue;">Account*</label>
                                                     <div class="col-sm-10 col-md-7 col-5">
                                                         <div class="d-flex align-items-center">
-                                                            <select name="cost_acc" class="form-select bg-white " id="myaccount" style="color: #fefefe;background-color: #000;" required>
+                                                            <select name="cost_acc" class="form-select " id="myaccount" style="color: #000000;background-color: #ffffff;" required>
                                                               <option value="">--Select Account--</option>
                                                               <optgroup id="expensesel" label="Expense">
                                                          
@@ -525,7 +525,7 @@ li{
                                                     <label class="col-sm-2 col-form-label" style="color: aliceblue;">Description</label>
                                                     <div class="col-sm-10 col-md-7 col-5">
                                                         <div class="d-flex align-items-center">
-                                                            <input  type="text" style="color: #ede4e4;" name="pur_desc" class="form-control bg-white " placeholder="Enter Discription">
+                                                            <input  type="text" style="color: #000000;" name="pur_desc" class="form-control bg-white " placeholder="Enter Discription">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -535,7 +535,7 @@ li{
                                                 <div class="form-group row text-center">
                                                     <label class="col-sm-2 col-form-label" style="color: aliceblue;">Minimum Stock to maintain :</label>
                                                     <div class="col-sm-10 col-md-7 col-9 d-flex align-items-center" style="margin-left: -2.2rem;">
-                                                      <input type="number" style="color: #ede4e4;" name="minimum_stock" class="form-control mx-auto bg-white" placeholder="Enter Minimum Stock">
+                                                      <input type="number" style="color: #000000;" name="minimum_stock" class="form-control mx-auto bg-white" placeholder="Enter Minimum Stock">
                                                     </div>
                                                   </div>
                                                   <br>
@@ -555,7 +555,7 @@ li{
                                                       <div class="form-group row" >
                                                         <label class="col-sm-2 col-form-label" style="color: aliceblue;">Inventory Account *</label>
                                                         <div class="col-sm-10 col-md-7 col-9" style="margin-left: -1rem;">
-                                                          <select class="form-select form-select-sm mt-3 bg-white" name="invacc" style="background-color: black; color: white;">
+                                                          <select class="form-select form-select-sm mt-3 bg-white" name="invacc" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);">
                                                             <option value="">Choose..</option>
                                                             <option value="inventory assets">Inventory Asset</option>
                                                           </select>
@@ -565,14 +565,14 @@ li{
                                                       <div class="form-group row ">
                                                         <label class="col-sm-2 col-form-label" style="color: aliceblue;">Opening Stock</label>
                                                         <div class=" col-md-5">
-                                                          <input  type="number" style="color: #ede4e4;" class="form-control bg-white"  name="openstock" value="0">
+                                                          <input  type="number" style="color: #000000;" class="form-control bg-white"  name="openstock" value="0">
                                                         </div>
                                                         </div>
                                                         <br>
                                                         <div class="form-group row ">
                                                             <label class="col-sm-2 col-form-label" style="color: aliceblue;">Opening Stock Rate per Unit</label>
                                                             <div class=" col-md-5">
-                                                                <input type="number" style="color: #ede4e4;" class="form-control bg-white" name="rate"  value="0">
+                                                                <input type="number" style="color: #000000;" class="form-control bg-white" name="rate"  value="0">
                                                             </div>
                                                             </div>
                                     
@@ -1011,56 +1011,49 @@ li{
             
                <!-- UNIT SCRIPT -->
                <script>
-              
-            $(document).on("click", "#UnitSave2", function(event) {
-              event.preventDefault(); // Prevent the default form submission
-            
-              $.ajax({
-                type: 'POST',
-                url: "",
-                data: {
-                  units: $("#unitName").val(),
-                  csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-                success: function(response) {
-                  if (response.message === 'success') {
-                    document.getElementById("unitform").reset();
-                    reloadUnit();
-                  } else {
-                    $("#error-message-container").text("Unit with the same name exists");
-                  }
-                },
-              });
-            });
-            
-            
-            
-             
-              
-              
-              function reloadUnit() {
-            
-              $.ajax({
-                url: "",
-                type: "GET",
-                dataType: "json",
-                data: $(this).serialize(),
-                csrfmiddlewaretoken: '{{ csrf_token }}',
-              
-                success: function(data) {
-                  var dropdown = $('#selunit');
-            
-                  $.each(data, function(key, value) {
-               
-                      dropdown.append($('<option></option>').attr('value', key).text(value[1]).val(key));
-            
+                $(document).on("click","#UnitSave2",function(){
+                  $.ajax({
+                    type : 'POST',
+                    url:"{% url 'godownmodal_unit' %}",
+                    data:{
+                        unit : $("#unitName").val(),                
+                        csrfmiddlewaretoken: '{{ csrf_token }}'        
+                      },    
+                      success: function(response) {
+                        document.getElementById("unitform").reset();
+                        reloadUnit();
+                      },
+                  });        
+                });
+                
+                </script>
+                <script>
+                function reloadUnit() {
+                
+                  $.ajax({
+                    url: "{% url 'godownunit_dropdown' %}",
+                    type: "GET",
+                    dataType: "json",
+                    data: $(this).serialize(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                
+                    success: function(data) {
+                      var dropdown = $('#selunit');
+                      dropdown.empty();
+                
+                      $.each(data, function(key, value) {
+                          dropdown.append($('<option></option>').attr('value', key).text(value[0]).val(value[1]));
+                      });
+                      $('#commentModal').modal('show');
+                    },
+                    error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    }
                   });
-            
-                },
-             
-              });
-              }
-              </script>
+                }
+                
+                </script>
+                
                <!-- UNIT SCRIPT END -->
             
             
@@ -1153,13 +1146,13 @@ li{
                       <div class="card p-3 m-3" style="background-color: #000;">
                       
                    <div id="error-message-container" style="color: chocolate;"></div>
-                        <form action="" class="needs-validation" novalidate autocomplete="off" id="unitform">
+                        <form action="{% url 'godownmodal_unit' %}" method="post" class="needs-validation" novalidate autocomplete="off" id="unitform">
                           {% csrf_token %}
                  
                           <h1 class="text-dark"></h1>
                     
                           <label class="text-white" for="unit"><b>Unit Name</b></label>
-                          <input type="text" class="form-control text-white bg-white"  placeholder="Enter unit" id="unitName" name="unit_name" required>
+                          <input type="text" class="form-control text-black bg-white"  placeholder="Enter unit" id="unitName" name="unit_name" required>
                           <p class="text-white">eg:KL,PCS,BOX,LTR</p>
                     
                           <button type="submit"  id="UnitSave2" class="btn submit text-white" style="border-color: #ced4da;">Add</button>
@@ -1203,7 +1196,7 @@ li{
                                 <div class="col">
                                     <div class="row">
                                         <div class="col-sm-4">
-                                            <label for="">Account Type:</label>
+                                            <label class="text-white" for="">Account Type:</label>
                                         </div>
                                         <div class="col-sm-8">
                                             <div class="select-box1" onclick="message()">
@@ -1284,7 +1277,7 @@ li{
                                     <div id="name" style="display: block;">
                                         <div class="row mt-3">
                                             <div class="col-sm-4">
-                                                <label for="">Account Name:</label>
+                                                <label class="text-white" for="">Account Name:</label>
                                             </div>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control text-dark bg-light" name="account_name"
@@ -1296,7 +1289,7 @@ li{
                                     <div id="credit" style="display: none;">
                                         <div class="row mt-3">
                                             <div class="col-sm-4">
-                                                <label for="">Credit Card Name:</label>
+                                                <label class="text-white" for="">Credit Card Name:</label>
                                             </div>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control text-dark bg-light" style="width: 70%;" name="credit_number"
@@ -1311,7 +1304,7 @@ li{
                     
                                     <div class="row mt-3">
                                         <div class="col-sm-4">
-                                            <label for="">Account Code:</label>
+                                            <label class="text-white" for="">Account Code:</label>
                                         </div>
                                         <div class="col-sm-8">
                                             <input type="text" class="form-control text-dark bg-light" name="account_code"
@@ -1321,7 +1314,7 @@ li{
                                     <div style="display: none;" id="acc_bo_div">
                                         <div class="row mt-3">
                                             <div class="col-sm-4">
-                                                <label for="">Account Number:</label>
+                                                <label class="text-white" for="">Account Number:</label>
                                             </div>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control text-dark bg-light" name="account_number"
@@ -1333,7 +1326,7 @@ li{
                                     <div style="display: none;" id="cr_div">
                                         <div class="row mt-3">
                                             <div class="col-sm-4">
-                                                <label for="">Currency:</label>
+                                                <label class="text-white" for="">Currency:</label>
                                             </div>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control text-dark bg-light" name="currency" id="currency" style="width: 100%;">
@@ -1342,7 +1335,7 @@ li{
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-sm-4">
-                                            <label for="">Description:</label>
+                                            <label class="text-white" for="">Description:</label>
                                         </div>
                                         <div class="col-sm-8">
                                             <textarea name="description" class="form-control text-dark bg-light" id="description"
