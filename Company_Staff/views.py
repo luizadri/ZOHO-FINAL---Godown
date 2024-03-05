@@ -1010,7 +1010,7 @@ def change_action(request, pk):
     godown_obj.save()
     return redirect('overview_page',pk=pk)
 
-def Add_Comment(request,pk):
+def AddComment(request,pk):
 
     if 'login_id' in request.session:
         log_id = request.session['login_id']
@@ -1046,7 +1046,7 @@ def Add_Comment(request,pk):
         messages.success(request,'Added Comment Successfully')
         return redirect('overview_page',pk=pk)
     
-def Add_File(request, pk):
+def AddFile(request, pk):
 
     godown_obj = Godown.objects.get(id=pk)
     if request.method == 'POST':
@@ -1063,7 +1063,7 @@ def file_download(request,pk):
     response['Content-Disposition'] = f'attachment; filename="{file.name}"'
     return response
 
-def shareemail(request,pk):
+def ShareEmail(request,pk):
     try:
             if request.method == 'POST':
                 emails_string = request.POST['email']
@@ -1092,18 +1092,8 @@ def shareemail(request,pk):
             messages.error(request, f'{e}')
             return redirect('overview_page',pk=pk)
     
-# def Edit_Comment(request,pk):
-        
-#     comment = GodownComments.objects.get(id=pk)
-#     if request.method == 'POST':
-#         comments = request.POST.get('comments')
-#         comment.comment = comments
-#         comment.save()
-
-#         messages.success(request,'Edited Comment Successfully')
-#         return redirect('overview_page',pk=pk)
     
-def Delete_Comment(request,pk):
+def DeleteComment(request,pk):
         
     comment = GodownComments.objects.get(id=pk)
     comment.delete()
@@ -1273,7 +1263,7 @@ def godownmodal_unit(request):
                 unit_obj = Unit(unit_name=units,
                         company=company)
                 unit_obj.save()
-                return HttpResponse({"message": "success"})
+                return JsonResponse({"message": "success"})
         if log_details.user_type == 'Staff':
             staff = StaffDetails.objects.get(login_details=log_details)
             company = staff.company
@@ -1283,8 +1273,8 @@ def godownmodal_unit(request):
                 unit_obj = Unit(unit_name=units,
                         company=company)
                 unit_obj.save()
-                return HttpResponse({"message": "success"})
-    return redirect('add_godown')
+                return JsonResponse({"message": "success"})
+        return redirect('add_godown')
 
 def godownunit_dropdown(request):
 
@@ -1295,7 +1285,7 @@ def godownunit_dropdown(request):
 
     return JsonResponse(options)
     
-def Add_Account(request):
+def AddAccount(request):
     
     if 'login_id' in request.session:
         log_id = request.session['login_id']

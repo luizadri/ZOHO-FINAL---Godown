@@ -1019,15 +1019,14 @@ li{
                         unit : $("#unitName").val(),                
                         csrfmiddlewaretoken: '{{ csrf_token }}'        
                       },    
-                      success: function(response) {
+                      success: function(data) {
+                        console.log('ABC');
                         document.getElementById("unitform").reset();
                         reloadUnit();
                       },
                   });        
                 });
                 
-                </script>
-                <script>
                 function reloadUnit() {
                 
                   $.ajax({
@@ -1181,7 +1180,7 @@ li{
                     <div class="card p-3 m-3" style="background-color: #000;">
                     
                      
-                        <form action="" method="post"  style="color: #000000;" id="newaccount">
+                        <form action="{% url 'AddAccount' %}" method="post"  style="color: #000000;" id="newaccount">
                           {% csrf_token %}
                           {% for m in messages %}
                           <p style="color: chocolate;">{{m}}</p>
