@@ -1019,7 +1019,7 @@ li{
                         unit : $("#unitName").val(),                
                         csrfmiddlewaretoken: '{{ csrf_token }}'        
                       },    
-                      success: function(data) {
+                      success: function(response){
                         console.log('ABC');
                         document.getElementById("unitform").reset();
                         reloadUnit();
@@ -1036,13 +1036,15 @@ li{
                     data: $(this).serialize(),
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                 
-                    success: function(data) {
+                    success: function(options) {
+                      console.log("SUCCESS");
                       var dropdown = $('#selunit');
                       dropdown.empty();
-                
-                      $.each(data, function(key, value) {
+                      console.log("ZZZ");
+                      $.each(options, function(key, value) {
                           dropdown.append($('<option></option>').attr('value', key).text(value[0]).val(value[1]));
                       });
+                      console.log("AAA");
                       $('#commentModal').modal('show');
                     },
                     error: function(xhr, status, error) {
@@ -1145,7 +1147,7 @@ li{
                       <div class="card p-3 m-3" style="background-color: #000;">
                       
                    <div id="error-message-container" style="color: chocolate;"></div>
-                        <form action="{% url 'godownmodal_unit' %}" method="post" class="needs-validation" novalidate autocomplete="off" id="unitform">
+                        <form action="" method="post" class="needs-validation" novalidate autocomplete="off" id="unitform">
                           {% csrf_token %}
                  
                           <h1 class="text-dark"></h1>
