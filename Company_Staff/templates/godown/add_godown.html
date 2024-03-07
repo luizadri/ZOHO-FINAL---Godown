@@ -341,14 +341,9 @@ li{
                                                             <option value={{i.id}}>{{i.unit_name}}</option>
                                                           {% endfor %}
                                                         </select>
-                                                        <script>
-                                                          $(document).ready(function() {
-                                                            // Initialize select2
-                                                            $('#selunit').select2();
-                                                          });
-                                                          </script>                        
+                                                                               
                                                            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" defer ></script>
-                                                    <a class="btn btn-outline-warning py-2" style="cursor: pointer;" data-toggle="modal" data-target="#unitmodal" style="height: 38px; margin-right: 3px;">+</a>
+                                                    <a class="btn btn-outline-warning py-2" style="cursor: pointer;" id="unitAddButton" style="height: 38px; margin-right: 3px;">+</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1010,7 +1005,77 @@ li{
             
             
                <!-- UNIT SCRIPT -->
+
                <script>
+                $(document).ready(function () {
+
+                    // Event handler for + button click
+                    $('#unitAddButton').click(function () {
+                        showModal();
+                    });
+                    // Function to check if the unit already exists
+                    /*function checkUnitExistence(newUnit, callback) {
+                        $.ajax({
+                            type: 'GET',
+                            url: 'check_unit_existence',
+                            data: { 'unit': newUnit },
+                            success: function (data) {
+                                callback(data.exists);
+                            },
+                            error: function (error) {
+                                console.log(error);
+                                callback(false);
+                            }
+                        });
+                    }*/
+            
+                    // Function to show the modal
+                    function showModal() {
+                        $('#unitmodal').modal('show');
+                    }
+            
+                    // Event handler for form submission
+                    $('#unitform').submit(function (e) {
+                        e.preventDefault();
+                        var newUnit = $('#unitName').val();
+
+                        $.ajax({
+                            type : 'POST',
+                            url:"{% url 'godownmodal_unit' %}",
+                            data:{
+                                unit : newUnit,            
+                                csrfmiddlewaretoken: '{{ csrf_token }}'        
+                              },    
+                              success: function(response){
+            
+                        // Check if the unit already exists
+                        /*checkUnitExistence(newUnit, function (exists) {
+                            if (exists) {
+                                // Display a message that the unit already exists
+                                alert('Unit already exists. Please choose a different unit.');
+                            } else {*/
+                                // Add the new unit to the select options
+                                $('#selunit').append($('<option>', {
+                                    value: newUnit.toUpperCase(),
+                                    text: newUnit.toUpperCase()
+                                }));
+                                // Close the modal
+                                $('#unitmodal').modal('hide');
+            
+                                // Open the "ADD ITEM" modal
+                                $('#commentModal').modal('show');
+                              }
+
+                            });
+
+                    });
+            
+                    
+                });
+            </script>
+
+
+               <!-- <script>
                 $(document).on("click","#UnitSave2",function(){
                   $.ajax({
                     type : 'POST',
@@ -1046,6 +1111,7 @@ li{
                       });
                       console.log("AAA");
                       $('#commentModal').modal('show');
+                      console.log("AAA");
                     },
                     error: function(xhr, status, error) {
                     console.error(xhr.responseText);
@@ -1053,7 +1119,7 @@ li{
                   });
                 }
                 
-                </script>
+                </script> -->
                 
                <!-- UNIT SCRIPT END -->
             
@@ -1147,7 +1213,7 @@ li{
                       <div class="card p-3 m-3" style="background-color: #000;">
                       
                    <div id="error-message-container" style="color: chocolate;"></div>
-                        <form action="" method="post" class="needs-validation" novalidate autocomplete="off" id="unitform">
+                        <form action="{% url 'godownmodal_unit' %}" method="post" class="needs-validation" novalidate autocomplete="off" id="unitform">
                           {% csrf_token %}
                  
                           <h1 class="text-dark"></h1>

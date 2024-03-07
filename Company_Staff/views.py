@@ -1259,11 +1259,11 @@ def godownmodal_unit(request):
             company = CompanyDetails.objects.get(login_details=log_details,superadmin_approval=1,Distributor_approval=1)
             if request.method=='POST':
                 units =request.POST.get('unit')
-                
                 unit_obj = Unit(unit_name=units,
                         company=company)
                 unit_obj.save()
-                return JsonResponse({'success': True})
+                return JsonResponse({'status': 'success', 'message': 'Unit added successfully'})
+
         if log_details.user_type == 'Staff':
             staff = StaffDetails.objects.get(login_details=log_details)
             company = staff.company
@@ -1273,7 +1273,8 @@ def godownmodal_unit(request):
                 unit_obj = Unit(unit_name=units,
                         company=company)
                 unit_obj.save()
-                return JsonResponse({'success': True})
+                return JsonResponse({'status': 'success', 'message': 'Unit added successfully'})
+
 
 def godownunit_dropdown(request):
 
@@ -1282,7 +1283,7 @@ def godownunit_dropdown(request):
     for option in option_objects:
         options[option.id] = [option.unit_name,option.id]
     print(options)
-    return JsonResponse({'options':options})
+    return JsonResponse(options)
     
 def AddAccount(request):
     
