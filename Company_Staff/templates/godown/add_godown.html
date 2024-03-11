@@ -2,6 +2,9 @@
 {% block content %}
 {% load static %}
 
+  <!-- Bootstrap SelectPicker CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css">
+
 
 
 <style> /* MODAL STYLE */
@@ -150,6 +153,14 @@ li{
   }
 </style>
 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/i18n/defaults-en_US.min.js"></script>
+
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -203,13 +214,22 @@ li{
                                                     <label for="">Item</label>
                                                 </div>
                                                 <div class="input-container col-sm-6">
-                                                    <select class="form-select bg-white text-center" name="Item" id="Item" required>
+                                                    <select class="form-control  bg-white text-center selectpicker" data-live-search="true" name="Item" id="Item" required>
                                                         <option value="" selected disabled>-- SELECT --</option>
                                                         {% for i in item_obj %}
                                                             <option value="{{i.id}}">{{i.item_name}}</option>
                                                         {% endfor %}
 
+
+
                                                     </select>
+
+                                                    <!-- Initialize Bootstrap SelectPicker -->
+                                                <script>
+                                                    $(document).ready(function () {
+                                                    $('.selectpicker').selectpicker();
+                                                    });
+                                                </script>
                                                     
                                                 </div>
                                                 <div class="input-container col-2">
@@ -509,7 +529,7 @@ li{
                                                               });
                                                               </script>                        
                                                                <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" defer ></script>
-                                                            <a class="btn btn-outline-warning py-2" style="cursor: pointer;" data-toggle="modal" data-target="#account" style="height: 38px; margin-right: 3px;">+</a>
+                                                            <a class="btn btn-outline-warning py-2" style="cursor: pointer;" id="unitAddAccount" style="height: 38px; margin-right: 3px;">+</a>
                                      
                                                         </div>
                                                        
@@ -1033,6 +1053,9 @@ li{
                     function showModal() {
                         $('#unitmodal').modal('show');
                     }
+
+
+                    
             
                     // Event handler for form submission
                     $('#unitform').submit(function (e) {
@@ -1125,7 +1148,92 @@ li{
             
             
                 <!-- ACCOUNT SCRIPT-->
-               <script>
+
+                <script>
+                    $(document).ready(function () {
+    
+                        // Event handler for + button click
+                        $('#unitAddAccount').click(function () {
+                            showModal();
+                        });
+                        // Function to check if the unit already exists
+                        /*function checkUnitExistence(newUnit, callback) {
+                            $.ajax({
+                                type: 'GET',
+                                url: 'check_unit_existence',
+                                data: { 'unit': newUnit },
+                                success: function (data) {
+                                    callback(data.exists);
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                    callback(false);
+                                }
+                            });
+                        }*/
+                
+                        // Function to show the modal
+                        function showModal() {
+                            $('#account').modal('show');
+                        }
+    
+    
+                        
+                
+                        // Event handler for form submission
+                        $('#newaccount').submit(function (e) {
+                            e.preventDefault();
+                            var acctype = $('#soValue1').val();
+                            var accName = $('#account_name').val();
+                            var accCode = $('#account_code').val();
+                          
+                            var desc = $('#description').val();
+    
+                            $.ajax({
+                                type : 'POST',
+                                url:"{% url 'AddAccount' %}",
+                                data:{
+                                    acctype : acctype,
+                                    accName : accName,
+                                    accCode : accCode,
+                                    
+                                    desc : desc,         
+                                    csrfmiddlewaretoken: '{{ csrf_token }}'        
+                                  },    
+                                  success: function(response){
+                
+                            // Check if the unit already exists
+                            /*checkUnitExistence(newUnit, function (exists) {
+                                if (exists) {
+                                    // Display a message that the unit already exists
+                                    alert('Unit already exists. Please choose a different unit.');
+                                } else {*/
+                                    // Add the new unit to the select options
+                                    $('#myaccount').append($('<option>', {
+                                        value: accName.toUpperCase(),
+                                        text: accName.toUpperCase()
+                                    }));
+                                    // Close the modal
+                                    $('#account').modal('hide');
+                
+                                    // Open the "ADD ITEM" modal
+                                    $('#account').modal('show');
+                                  }
+    
+                                });
+    
+                        });
+                
+                        
+                    });
+                </script>
+    
+
+
+
+
+
+               <!-- <script>
                 $(document).on("click","#newaccountsave",function(){
                   event.preventDefault();
                 $.ajax({
@@ -1193,7 +1301,7 @@ li{
                 }
               });
               }
-              </script>
+              </script> -->
                <!-- ACCOUNT SCRIPT END -->
             
                
@@ -1206,9 +1314,16 @@ li{
                   <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
                     <div class="modal-header" style="background: rgb(32, 35, 37);">
                       <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #eeeaea;">Add Unit</h5>
-                      <button type="button" class="close" style="width: 30px;" data-dismiss="modal" aria-label="Close"><span
+                      <button type="button" class="close" style="width: 30px;" onclick="hideModal()" aria-label="Close"><span
                           aria-hidden="true">&times;</span></button>
                     </div>
+                    <script>
+                        function hideModal() {
+                            $('#unitmodal').modal('hide');
+                        }
+                    </script>
+                    
+
                     <div class="modal-body" style="background: rgb(32, 35, 37);">
                       <div class="card p-3 m-3" style="background-color: #000;">
                       
@@ -1241,9 +1356,15 @@ li{
                 <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
                   <div class="modal-header" style="background: rgb(32, 35, 37);">
                     <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #eeeaea;"><b>New Account</b></h5>
-                    <button type="button" class="close" style="width: 30px;" data-dismiss="modal" aria-label="Close"><span
+                    <button type="button" class="close" style="width: 30px;" onclick="hideaccModal()" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
+
                   </div>
+                  <script>
+                    function hideaccModal() {
+                        $('#account').modal('hide');
+                    }
+                </script>
                   <div class="modal-body" style="background: rgb(32, 35, 37);">
                     <div class="card p-3 m-3" style="background-color: #000;">
                     
