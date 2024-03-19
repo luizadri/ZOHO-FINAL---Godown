@@ -189,27 +189,17 @@ li{
                                     {% csrf_token %}
                                     <div class="row">
                                         <div class="data  col-lg-12 col-md-12 col-sm-12">
-                                            <div class="row pb-3">
-                                                <div class="col-4">
-                                                    <label for="">Date</label>
-                                                </div>
-                                                <div class="input-container col-sm-6">
-                                                    <input type="hidden" name="godown_id" value="{{godown_obj.id}}">
-                                                    <input type="date" class="form-control text-dark bg-light"
-                                                        name="Date" id="Date" value="{{ godown_obj.date|date:'Y-m-d' }}" required>
-                                                </div>
-                                            </div>
+
                                             <div class="row pb-3">
                                                 <div class="col-4">
                                                     <label for="">Item</label>
                                                 </div>
                                                 <div class="input-container col-sm-6">
                                                     <select class="form-select bg-white text-center" name="Item" id="Item" required>
-                                                        <option value="{{ godown_obj.item.id }}" selected>{{ godown_obj.item.item_name }}</option>
+                                                        <option value="" selected disabled>-- SELECT --</option>
                                                         {% for i in item_obj %}
                                                             <option value="{{i.id}}">{{i.item_name}}</option>
                                                         {% endfor %}
-
                                                     </select>
                                                     
                                                 </div>
@@ -221,6 +211,18 @@ li{
                                                     </a>
                                                 </div>
                                             </div>
+
+                                            <div class="row pb-3">
+                                                <div class="col-4">
+                                                    <label for="">Date</label>
+                                                </div>
+                                                <div class="input-container col-sm-6">
+                                                    <input type="hidden" name="godown_id" value="{{godown_obj.id}}">
+                                                    <input type="date" class="form-control text-dark bg-light"
+                                                        name="Date" id="Date" value="{{ godown_obj.date|date:'Y-m-d' }}" required>
+                                                </div>
+                                            </div>
+                                            
                                             <div class="row pb-3">
                                                 <div class="col-4">
                                                     <label for="">Godown Name</label>
@@ -265,11 +267,11 @@ li{
 
                                     <hr>
                                     <div class="action-button">
-                                        <button class="btn text-light my-2 mx-2" name="save" value="Saved" type="submit"
-                                            style="background-color: rgb(0, 130, 11); width: 150px; font-size: medium;"
+                                        <button class="btn btn-warning text-light my-2 mx-2" name="save" value="Saved" type="submit"
+                                            style=" width: 150px; font-size: medium;"
                                             onclick="validateform()">Edit</button>
-                                        <button class="btn btn-danger my-2 mx-2" type="reset"
-                                            style="background-color: rgb(188, 0, 0); width: 150px; font-size: medium;"
+                                        <button class="btn btn-warning my-2 mx-2" type="reset"
+                                            style="width: 150px; font-size: medium;"
                                             onclick="goToTop()">Cancel</button>
 
                                     </div>
@@ -339,14 +341,14 @@ li{
                                                             <option value={{i.id}}>{{i.unit_name}}</option>
                                                           {% endfor %}
                                                         </select>
-                                                        <script>
+                                                        <!-- <script>
                                                           $(document).ready(function() {
                                                             // Initialize select2
                                                             $('#selunit').select2();
                                                           });
-                                                          </script>                        
+                                                          </script>                         -->
                                                            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" defer ></script>
-                                                    <a class="btn btn-outline-warning py-2" style="cursor: pointer;" data-toggle="modal" data-target="#unitmodal" style="height: 38px; margin-right: 3px;">+</a>
+                                                    <a class="btn btn-outline-warning py-2" style="cursor: pointer;" data-toggle="modal" id="unitAddButton" style="height: 38px; margin-right: 3px;">+</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -505,14 +507,14 @@ li{
                                                              
                                                           
                                                             </select>
-                                                            <script>
+                                                            <!-- <script>
                                                               $(document).ready(function() {
                                                                 // Initialize select2
                                                                 $('#myaccount').select2();
                                                               });
-                                                              </script>                        
+                                                              </script>                         -->
                                                                <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" defer ></script>
-                                                            <a class="btn btn-outline-warning py-2" style="cursor: pointer;" data-toggle="modal" data-target="#account" style="height: 38px; margin-right: 3px;">+</a>
+                                                            <a class="btn btn-outline-warning py-2" style="cursor: pointer;" data-toggle="modal" id="unitAddAccount" style="height: 38px; margin-right: 3px;">+</a>
                                      
                                                         </div>
                                                        
@@ -532,7 +534,7 @@ li{
                                                 <br>     <br>
                                                 <div class="form-group row text-center">
                                                     <label class="col-sm-2 col-form-label" style="color: aliceblue;">Minimum Stock to maintain :</label>
-                                                    <div class="col-sm-10 col-md-7 col-9 d-flex align-items-center" style="margin-left: -2.2rem;">
+                                                    <div class="col-sm-10 col-md-7 col-9 d-flex align-items-center">
                                                       <input type="number" style="color: #000000;" name="minimum_stock" class="form-control mx-auto bg-white" placeholder="Enter Minimum Stock">
                                                     </div>
                                                   </div>
@@ -1059,10 +1061,168 @@ li{
               });
               }
               </script> -->
+
+              <script>
+                $(document).ready(function () {
+
+                    // Event handler for + button click
+                    $('#unitAddButton').click(function () {
+                        showModal();
+                    });
+                    // Function to check if the unit already exists
+                    /*function checkUnitExistence(newUnit, callback) {
+                        $.ajax({
+                            type: 'GET',
+                            url: 'check_unit_existence',
+                            data: { 'unit': newUnit },
+                            success: function (data) {
+                                callback(data.exists);
+                            },
+                            error: function (error) {
+                                console.log(error);
+                                callback(false);
+                            }
+                        });
+                    }*/
+            
+                    // Function to show the modal
+                    function showModal() {
+                        $('#unitmodal').modal('show');
+                    }
+
+
+                    
+            
+                    // Event handler for form submission
+                    $('#unitform').submit(function (e) {
+                        e.preventDefault();
+                        var newUnit = $('#unitName').val();
+
+                        $.ajax({
+                            type : 'POST',
+                            url:"{% url 'godownmodal_unit' %}",
+                            data:{
+                                unit : newUnit,            
+                                csrfmiddlewaretoken: '{{ csrf_token }}'        
+                              },    
+                              success: function(response){
+            
+                        // Check if the unit already exists
+                        /*checkUnitExistence(newUnit, function (exists) {
+                            if (exists) {
+                                // Display a message that the unit already exists
+                                alert('Unit already exists. Please choose a different unit.');
+                            } else {*/
+                                // Add the new unit to the select options
+                                $('#selunit').append($('<option>', {
+                                    value: response.id,
+                                    text: newUnit.toUpperCase()
+                                }));
+                                // Close the modal
+                                $('#unitmodal').modal('hide');
+            
+                                // Open the "ADD ITEM" modal
+                                $('#commentModal').modal('show');
+                              }
+
+                            });
+
+                    });
+            
+                    
+                });
+
+            </script>
+
                <!-- UNIT SCRIPT END -->
             
             
                 <!-- ACCOUNT SCRIPT-->
+
+
+                <script>
+                    $(document).ready(function () {
+    
+                        // Event handler for + button click
+                        $('#unitAddAccount').click(function () {
+                            showModal();
+                        });
+                        // Function to check if the unit already exists
+                        /*function checkUnitExistence(newUnit, callback) {
+                            $.ajax({
+                                type: 'GET',
+                                url: 'check_unit_existence',
+                                data: { 'unit': newUnit },
+                                success: function (data) {
+                                    callback(data.exists);
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                    callback(false);
+                                }
+                            });
+                        }*/
+                
+                        // Function to show the modal
+                        function showModal() {
+                            $('#account').modal('show');
+                        }
+    
+    
+                        
+                
+                        // Event handler for form submission
+                        $('#newaccount').submit(function (e) {
+                            e.preventDefault();
+                            var acctype = $('#soValue1').val();
+                            var accName = $('#account_name').val();
+                            var accCode = $('#account_code').val();
+                          
+                            var desc = $('#description').val();
+    
+                            $.ajax({
+                                type : 'POST',
+                                url:"{% url 'AddAccount' %}",
+                                data:{
+                                    acctype : acctype,
+                                    accName : accName,
+                                    accCode : accCode,
+                                    
+                                    desc : desc,         
+                                    csrfmiddlewaretoken: '{{ csrf_token }}'        
+                                  },    
+                                  success: function(response){
+                
+                            // Check if the unit already exists
+                            /*checkUnitExistence(newUnit, function (exists) {
+                                if (exists) {
+                                    // Display a message that the unit already exists
+                                    alert('Unit already exists. Please choose a different unit.');
+                                } else {*/
+                                    // Add the new unit to the select options
+                                    $('#myaccount').append($('<option>', {
+                                        value: response.id,
+                                        text: accName.toUpperCase()
+                                    }));
+                                    // Close the modal
+                                    $('#account').modal('hide');
+                
+                                    // Open the "ADD ITEM" modal
+                                    $('#account').modal('show');
+                                  }
+    
+                                });
+    
+                        });
+                
+                        
+                    });
+                </script>
+    
+
+
+
+
                <!-- <script>
                 $(document).on("click","#newaccountsave",function(){
                   event.preventDefault();
@@ -1101,7 +1261,7 @@ li{
               </script> -->
               
                
-              <script>
+              <!-- <script>
               
               
               
@@ -1131,7 +1291,7 @@ li{
                 }
               });
               }
-              </script>
+              </script> -->
                <!-- ACCOUNT SCRIPT END -->
             
                
@@ -1144,9 +1304,14 @@ li{
                   <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
                     <div class="modal-header" style="background: rgb(32, 35, 37);">
                       <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #eeeaea;">Add Unit</h5>
-                      <button type="button" class="close" style="width: 30px;" data-dismiss="modal" aria-label="Close"><span
+                      <button type="button" class="close" style="width: 30px;" onclick="hideModal()" aria-label="Close"><span
                           aria-hidden="true">&times;</span></button>
                     </div>
+                    <script>
+                        function hideModal() {
+                            $('#unitmodal').modal('hide');
+                        }
+                    </script>
                     <div class="modal-body" style="background: rgb(32, 35, 37);">
                       <div class="card p-3 m-3" style="background-color: #000;">
                       
@@ -1179,14 +1344,21 @@ li{
                 <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
                   <div class="modal-header" style="background: rgb(32, 35, 37);">
                     <h5 class="m-3 text-uppercase" id="shareBillEmailLabel" style="color: #eeeaea;"><b>New Account</b></h5>
-                    <button type="button" class="close" style="width: 30px;" data-dismiss="modal" aria-label="Close"><span
+                    <button type="button" class="close" style="width: 30px;" onclick="hideaccModal()" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
                   </div>
+
+                  <script>
+                    function hideaccModal() {
+                        $('#account').modal('hide');
+                    }
+                </script>
+
                   <div class="modal-body" style="background: rgb(32, 35, 37);">
                     <div class="card p-3 m-3" style="background-color: #000;">
                     
                      
-                        <form action="{% url 'Add_Account_Edit' godown_obj.id %}" method="post"  style="color: #000000;" id="newaccount">
+                        <form action="{% url 'AddAccount' %}" method="post"  style="color: #000000;" id="newaccount">
                           {% csrf_token %}
                           {% for m in messages %}
                           <p style="color: chocolate;">{{m}}</p>
@@ -2147,7 +2319,23 @@ li{
               </div>
               </div>
 
+              <script>
+                $(document).ready(function() {
+                    $('#Item').select2({
+                        placeholder: "-- SELECT --",
+                        allowClear: true // optional, adds a clear button to the dropdown
+                    });
+                });
+            </script>
 
+<!-- Select2 CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+<!-- jQuery (required for Select2) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- Select2 JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 
 

@@ -2,9 +2,6 @@
 {% block content %}
 {% load static %}
 
-  <!-- Bootstrap SelectPicker CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css">
-
 
 
 <style> /* MODAL STYLE */
@@ -153,14 +150,6 @@ li{
   }
 </style>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/i18n/defaults-en_US.min.js"></script>
-
-
-
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -200,36 +189,18 @@ li{
                                     {% csrf_token %}
                                     <div class="row">
                                         <div class="data  col-lg-12 col-md-12 col-sm-12">
-                                            <div class="row pb-3">
-                                                <div class="col-4">
-                                                    <label for="">Date</label>
-                                                </div>
-                                                <div class="input-container col-sm-6">
-                                                    <input type="date" class="form-control text-dark bg-light"
-                                                        name="Date" id="Date" required>
-                                                </div>
-                                            </div>
+
                                             <div class="row pb-3">
                                                 <div class="col-4">
                                                     <label for="">Item</label>
                                                 </div>
                                                 <div class="input-container col-sm-6">
-                                                    <select class="form-control  bg-white text-center selectpicker" data-live-search="true" name="Item" id="Item" required>
+                                                    <select class="form-select bg-white text-center" name="Item" id="Item" required>
                                                         <option value="" selected disabled>-- SELECT --</option>
                                                         {% for i in item_obj %}
                                                             <option value="{{i.id}}">{{i.item_name}}</option>
                                                         {% endfor %}
-
-
-
                                                     </select>
-
-                                                    <!-- Initialize Bootstrap SelectPicker -->
-                                                <script>
-                                                    $(document).ready(function () {
-                                                    $('.selectpicker').selectpicker();
-                                                    });
-                                                </script>
                                                     
                                                 </div>
                                                 <div class="input-container col-2">
@@ -240,6 +211,17 @@ li{
                                                     </a>
                                                 </div>
                                             </div>
+
+                                            <div class="row pb-3">
+                                                <div class="col-4">
+                                                    <label for="">Date</label>
+                                                </div>
+                                                <div class="input-container col-sm-6">
+                                                    <input type="date" class="form-control text-dark bg-light"
+                                                        name="Date" id="Date" required>
+                                                </div>
+                                            </div>
+                                            
                                             <div class="row pb-3">
                                                 <div class="col-4">
                                                     <label for="">Godown Name</label>
@@ -284,14 +266,14 @@ li{
 
                                     <hr>
                                     <div class="action-button">
-                                        <button class="btn text-light my-2 mx-2" name="save" value="Saved" type="submit"
-                                            style="background-color: rgb(0, 130, 11); width: 150px; font-size: medium;"
+                                        <button class="btn btn-warning text-light my-2 mx-2" name="save" value="Saved" type="submit"
+                                            style="width: 150px; font-size: medium;"
                                             onclick="validateform()">Save</button>
-                                        <button class="btn btn-danger my-2 mx-2" type="reset"
-                                            style="background-color: rgb(188, 0, 0); width: 150px; font-size: medium;"
+                                        <button class="btn btn-warning my-2 mx-2" type="reset"
+                                            style=" width: 150px; font-size: medium;"
                                             onclick="goToTop()">Cancel</button>
-                                        <button class="btn btn-danger my-2 mx-2 text-white" name="save" value="Draft" type="submit"
-                                            style="background-color: rgb(41, 41, 41); width: 150px; font-size: medium;"
+                                        <button class="btn btn-warning my-2 mx-2 text-white" name="save" value="Draft" type="submit"
+                                            style="width: 150px; font-size: medium;"
                                             onclick="validateform()">Draft</button>
 
                                     </div>
@@ -357,9 +339,10 @@ li{
                                                 <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
                                                     <div class="d-flex align-items-center">
                                                         <select name="unit" class="form-select bg-white" id="selunit"  style="background-color: black; color: rgb(0, 0, 0);border-radius: 5px;"  >
-                                                          {% for i in units %}
+                                                            <option value="" selected disabled>-- SELECT --</option>
+                                                            {% for i in units %}
                                                             <option value={{i.id}}>{{i.unit_name}}</option>
-                                                          {% endfor %}
+                                                            {% endfor %}
                                                         </select>
                                                                                
                                                            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" defer ></script>
@@ -522,12 +505,12 @@ li{
                                                              
                                                           
                                                             </select>
-                                                            <script>
+                                                            <!-- <script>
                                                               $(document).ready(function() {
                                                                 // Initialize select2
                                                                 $('#myaccount').select2();
                                                               });
-                                                              </script>                        
+                                                              </script>                         -->
                                                                <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" defer ></script>
                                                             <a class="btn btn-outline-warning py-2" style="cursor: pointer;" id="unitAddAccount" style="height: 38px; margin-right: 3px;">+</a>
                                      
@@ -549,7 +532,7 @@ li{
                                                 <br>     <br>
                                                 <div class="form-group row text-center">
                                                     <label class="col-sm-2 col-form-label" style="color: aliceblue;">Minimum Stock to maintain :</label>
-                                                    <div class="col-sm-10 col-md-7 col-9 d-flex align-items-center" style="margin-left: -2.2rem;">
+                                                    <div class="col-sm-10 col-md-7 col-9 d-flex align-items-center" >
                                                       <input type="number" style="color: #000000;" name="minimum_stock" class="form-control mx-auto bg-white" placeholder="Enter Minimum Stock">
                                                     </div>
                                                   </div>
@@ -1079,7 +1062,7 @@ li{
                             } else {*/
                                 // Add the new unit to the select options
                                 $('#selunit').append($('<option>', {
-                                    value: newUnit.toUpperCase(),
+                                    value: response.id,
                                     text: newUnit.toUpperCase()
                                 }));
                                 // Close the modal
@@ -1210,7 +1193,7 @@ li{
                                 } else {*/
                                     // Add the new unit to the select options
                                     $('#myaccount').append($('<option>', {
-                                        value: accName.toUpperCase(),
+                                        value: response.id,
                                         text: accName.toUpperCase()
                                     }));
                                     // Close the modal
@@ -2332,7 +2315,77 @@ li{
 
 
 
+              <script>
+                $(document).ready(function() {
+                    $('#Item').select2({
+                        placeholder: "-- SELECT --",
+                        allowClear: true // optional, adds a clear button to the dropdown
+                    });
+                });
+            </script>
 
+            <script>
+                $(document).ready(function() {
+                    $('#selunit').select2({
+                        placeholder: "-- SELECT --",
+                        allowClear: true, // optional, adds a clear button to the dropdown
+                        dropdownParent: $('#commentModal') // specify the modal's ID here
+                    });
+                
+                    // Prevent default behavior on select element
+                    $('#selunit').on('click', function(event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    });
+                });
+            </script>
+
+            <script>
+                $(document).ready(function() {
+                    $('#myaccount').select2({
+                        placeholder: "-- SELECT --",
+                        allowClear: true, // optional, adds a clear button to the dropdown
+                        dropdownParent: $('#commentModal') // specify the modal's ID here
+                    });
+                
+                    // Prevent default behavior on select element
+                    $('#myaccount').on('click', function(event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    });
+                });
+            </script>
+
+
+            <style>
+                /* Override Select2 styles */
+            .select2-container {
+                width: 100% !important; /* Adjust width as needed */
+                margin: 0 !important;
+            }
+
+            .select2-selection__rendered {
+                color: #333; /* Set text color */
+                font-size: 14px; /* Set font size */
+                /* Add other styles as needed */
+            }
+
+            /* Override Select2 dropdown styles */
+            .select2-dropdown {
+                border: 1px solid #ccc; /* Set border color */
+                /* Add other dropdown styles as needed */
+            }
+            </style>
+            
+
+<!-- Select2 CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+<!-- jQuery (required for Select2) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- Select2 JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 
 

@@ -1262,7 +1262,8 @@ def godownmodal_unit(request):
                 unit_obj = Unit(unit_name=units,
                         company=company)
                 unit_obj.save()
-                return JsonResponse({'status': 'success', 'message': 'Unit added successfully'})
+                id = unit_obj.id
+                return JsonResponse({'status': 'success', 'message': 'Unit added successfully', 'id':id})
 
         if log_details.user_type == 'Staff':
             staff = StaffDetails.objects.get(login_details=log_details)
@@ -1273,8 +1274,9 @@ def godownmodal_unit(request):
                 unit_obj = Unit(unit_name=units,
                         company=company)
                 unit_obj.save()
+                id = unit_obj.id
                 
-                return JsonResponse({'status': 'success', 'message': 'Unit added successfully'})
+                return JsonResponse({'status': 'success', 'message': 'Unit added successfully', 'id':id})
 
 
 def godownunit_dropdown(request):
@@ -1310,6 +1312,7 @@ def AddAccount(request):
                                              company=company,
                                              login_details=log_details)
                 accounts.save()
+                id = accounts.id
               
         if log_details.user_type == 'Staff':
             staff = StaffDetails.objects.get(login_details=log_details)
@@ -1329,8 +1332,9 @@ def AddAccount(request):
                                              company=company,
                                              login_details=log_details)
                 accounts.save()
+                id = accounts.id
              
-        return JsonResponse({'status': 'success', 'message': 'Unit added successfully'})
+        return JsonResponse({'status': 'success', 'message': 'Unit added successfully', 'id':id})
     
 
 def Add_Item_Edit(request,pk):                                                                #new by tinto mt
@@ -1521,41 +1525,44 @@ def Add_Account_Edit(request,pk):
         if log_details.user_type == 'Company':
             company = CompanyDetails.objects.get(login_details=log_details,superadmin_approval=1,Distributor_approval=1)
             if request.method=='POST':
-                account_type =request.POST.get('account_type')
-                account_name =request.POST.get('account_name')
-                account_code =request.POST.get('account_code')
-                account_number =request.POST.get('account_number')
-                description =request.POST.get('description')
+                account_type =request.POST.get('acctype')
+                account_name =request.POST.get('accName')
+                account_code =request.POST.get('accCode')
+                
+                description =request.POST.get('desc')
             
                 accounts = Chart_of_Accounts(account_type=account_type,
                                              account_name=account_name,
                                              description=description,
-                                             account_number=account_number,
+                                             
                                              account_code=account_code,
                                              company=company,
                                              login_details=log_details)
                 accounts.save()
-                messages.success(request,'Account Added Successfully !!!')
+                id = accounts.id
+
         if log_details.user_type == 'Staff':
             staff = StaffDetails.objects.get(login_details=log_details)
             company = staff.company
             if request.method=='POST':
-                account_type =request.POST.get('account_type')
-                account_name =request.POST.get('account_name')
-                account_code =request.POST.get('account_code')
+                account_type =request.POST.get('acctype')
+                account_name =request.POST.get('accName')
+                account_code =request.POST.get('accCode')
                 
-                description =request.POST.get('description')
+                description =request.POST.get('desc')
             
                 accounts = Chart_of_Accounts(account_type=account_type,
                                              account_name=account_name,
                                              description=description,
-                                            
+                                             
                                              account_code=account_code,
                                              company=company,
                                              login_details=log_details)
                 accounts.save()
-                messages.success(request,'Account Added Successfully !!!')
-        return redirect('edit_godown',pk=pk)
+                id = accounts.id
+             
+        return JsonResponse({'status': 'success', 'message': 'Unit added successfully', 'id':id})
+    
 
 
 def delete_godown(request,pk):
