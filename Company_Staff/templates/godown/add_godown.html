@@ -2319,7 +2319,8 @@ li{
                 $(document).ready(function() {
                     $('#Item').select2({
                         placeholder: "-- SELECT --",
-                        allowClear: true // optional, adds a clear button to the dropdown
+                        allowClear: true // optional, adds a clear button to the dropdo
+                        dropdownParent: $('#myForm') // specify the modal's ID here
                     });
                 });
             </script>
@@ -2374,6 +2375,13 @@ li{
             .select2-dropdown {
                 border: 1px solid #ccc; /* Set border color */
                 /* Add other dropdown styles as needed */
+            }
+
+            .select2-dropdown {
+                position: fixed !important;
+                left: auto !important;
+                right: auto !important;
+                
             }
             </style>
             
