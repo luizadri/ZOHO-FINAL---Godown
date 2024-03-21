@@ -194,7 +194,7 @@ li{
                                                 <div class="col-4">
                                                     <label for="">Item</label>
                                                 </div>
-                                                <div class="input-container col-sm-6">
+                                                <div class="input-container col-sm-6" id="abc">
                                                     <select class="form-select bg-white text-center" name="Item" id="Item" required>
                                                         <option value="" selected disabled>-- SELECT --</option>
                                                         {% for i in item_obj %}
@@ -2319,8 +2319,8 @@ li{
                 $(document).ready(function() {
                     $('#Item').select2({
                         placeholder: "-- SELECT --",
-                        allowClear: true // optional, adds a clear button to the dropdo
-                        dropdownParent: $('#myForm') // specify the modal's ID here
+                        allowClear: true, // optional, adds a clear button to the dropdown
+                        dropdownParent: $('#abc')
                     });
                 });
             </script>
@@ -2381,7 +2381,8 @@ li{
                 position: fixed !important;
                 left: auto !important;
                 right: auto !important;
-                
+                top: auto !important;
+                bottom: auto !important;
             }
             </style>
             
