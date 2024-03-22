@@ -196,7 +196,7 @@ li{
                                                 </div>
                                                 <div class="input-container col-sm-6">
                                                     <select class="form-select bg-white text-center" name="Item" id="Item" required>
-                                                        <option value="" selected disabled>-- SELECT --</option>
+                                                        
                                                         {% for i in item_obj %}
                                                             <option value="{{i.id}}">{{i.item_name}}</option>
                                                         {% endfor %}
@@ -337,7 +337,8 @@ li{
                                                 <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
                                                     <div class="d-flex align-items-center">
                                                         <select name="unit" class="form-select bg-white" id="selunit"  style="background-color: black; color: rgb(0, 0, 0);border-radius: 5px;"  >
-                                                          {% for i in units %}
+                                                            <option value="" selected disabled>-- SELECT --</option>
+                                                            {% for i in units %}
                                                             <option value={{i.id}}>{{i.unit_name}}</option>
                                                           {% endfor %}
                                                         </select>
@@ -2327,6 +2328,68 @@ li{
                     });
                 });
             </script>
+
+            <script>
+                $(document).ready(function() {
+                    $('#selunit').select2({
+                        placeholder: "-- SELECT --",
+                        allowClear: true, // optional, adds a clear button to the dropdown
+                        dropdownParent: $('#commentModal') // specify the modal's ID here
+                    });
+                
+                    // Prevent default behavior on select element
+                    $('#selunit').on('click', function(event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    });
+                });
+            </script>
+
+            <script>
+                $(document).ready(function() {
+                    $('#myaccount').select2({
+                        placeholder: "-- SELECT --",
+                        allowClear: true, // optional, adds a clear button to the dropdown
+                        dropdownParent: $('#commentModal') // specify the modal's ID here
+                    });
+                
+                    // Prevent default behavior on select element
+                    $('#myaccount').on('click', function(event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    });
+                });
+            </script>
+
+
+            <style>
+                /* Override Select2 styles */
+            .select2-container {
+                width: 100% !important; /* Adjust width as needed */
+                margin: 0 !important;
+            }
+
+            .select2-selection__rendered {
+                color: #333; /* Set text color */
+                font-size: 14px; /* Set font size */
+                /* Add other styles as needed */
+            }
+
+            /* Override Select2 dropdown styles */
+            .select2-dropdown {
+                border: 1px solid #ccc; /* Set border color */
+                /* Add other dropdown styles as needed */
+            }
+
+            #commentModal .select2-dropdown {
+                position: fixed !important;
+                left: auto !important;
+                right: auto !important;
+                top: auto !important;
+                bottom: auto !important;
+            }
+            </style>
+            
 
 <!-- Select2 CSS -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
