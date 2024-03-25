@@ -204,7 +204,7 @@ li{
                                                     
                                                 </div>
                                                 <div class="input-container col-2">
-                                                    <a class="btn btn-warning text-right my-sm-0 my-2 px-3 py-2 flex-sm-row"
+                                                    <a class="btn btn-outline-warning text-right my-sm-0 my-2 px-3 py-2 flex-sm-row"
                                                         role="button" data-toggle="modal" data-target="#commentModal"
                                                         data-toggle="tooltip" href="">
                                                         <i class="fa fa-plus fs-4"></i>
@@ -266,13 +266,13 @@ li{
 
                                     <hr>
                                     <div class="action-button">
-                                        <button class="btn btn-warning text-light my-2 mx-2" name="save" value="Saved" type="submit"
+                                        <button class="btn btn-outline-warning  my-2 mx-2" name="save" value="Saved" type="submit"
                                             style="width: 150px; font-size: medium;"
                                             onclick="validateform()">Save</button>
-                                        <button class="btn btn-warning my-2 mx-2" type="reset"
+                                        <button class="btn btn-outline-warning my-2 mx-2" type="reset"
                                             style=" width: 150px; font-size: medium;"
                                             onclick="goToTop()">Cancel</button>
-                                        <button class="btn btn-warning my-2 mx-2 text-white" name="save" value="Draft" type="submit"
+                                        <button class="btn btn-outline-warning my-2 mx-2 " name="save" value="Draft" type="submit"
                                             style="width: 150px; font-size: medium;"
                                             onclick="validateform()">Draft</button>
 
@@ -282,8 +282,8 @@ li{
                             <!-- Modal -->
                             <div class="modal fade" id="commentModal">
                                 <div class="modal-dialog modal-xl">
-                                  <div class="modal-content" style="background: rgb(0, 0, 0);border-radius: 20px;">
-                                    <div class="modal-header" style="background: rgb(0, 0, 0);">
+                                  <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
+                                    <div class="modal-header" style="background: rgb(32, 35, 37);">
                                         <h4 id="selected_customer_heading" class="text" style="color: white; margin-left: 2%; padding-top: 20px;"><b>NEW ITEM</b></h4>
                                       <button type="button" class="close" style="width: 30px;" data-dismiss="modal" aria-label="Close"><span
                                           aria-hidden="true">&times;</span></button>
@@ -291,7 +291,7 @@ li{
                                     </div>
                                     <div class="row">
                                         
-                                        <div class="col-12">
+                                        <div class="col-12" >
                                             <div class="card mb-3 bg-black shadow p-3 rounded" style="max-width: 1400px;">
                                             
                                            <br>
@@ -316,7 +316,7 @@ li{
                                                       <label class="col-12 col-md-2 col-form-label pt-3" style="color: aliceblue;">Type  &nbsp;&nbsp;<i
                                                         class="fa fa-question-circle"></i></label>
                                                         <div class="form-check form-check-inline">
-                                                            <input required class="form-check-input" type="radio" name="type" id="gridRadios1" value="Goods">
+                                                            <input  required class="form-check-input" type="radio" name="type" id="gridRadios1" value="Goods">
                                                             <label class="form-check-label text-white" for="gridRadios1">Goods</label>
                                                         </div> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
                                                         <div class="form-check form-check-inline ml-md-3">
@@ -410,7 +410,7 @@ li{
                                               <br>
                                               <div class="row">
                                                 <div class="col-md-6">
-                                                  <input  type="checkbox" name="selling" checked> <label >selling  information</label><br><br>
+                                                  <input type="checkbox" name="selling" checked> <label >selling  information</label><br><br>
                                                   <div class="form-group row">
                                                     <br>
                                                     <label class="col-sm-2 col-form-label" style="color: aliceblue;">Selling price </label>
@@ -579,8 +579,8 @@ li{
                                                   </div>
                                                   
                                                 <div class="form-inline " style="padding-bottom: 20px;">
-                                                    <button type="submit"  class="mr-3 btn" style="background-color: chocolate;color: aliceblue;" value="Save">Save</button>
-                                                    <button type="button" class="mr-3 btn" onclick="resetForm()" value="Cancel" style="margin-left:10px;background-color: chocolate;color: aliceblue;">Cancel</button>
+                                                    <button type="submit"  class="mr-3 btn btn-outline-warning" value="Save">Save</button>
+                                                    <button type="button" class="mr-3 btn btn btn-outline-warning" onclick="resetForm()" value="Cancel" >Cancel</button>
                                                   </div>   
                                                   
                                                   <div class="form-inline " ></div>
@@ -1320,7 +1320,7 @@ li{
                           <input type="text" class="form-control text-black bg-white"  placeholder="Enter unit" id="unitName" name="unit_name" required>
                           <p class="text-white">eg:KL,PCS,BOX,LTR</p>
                     
-                          <button type="submit"  id="UnitSave2" class="btn submit text-white" style="border-color: #ced4da;">Add</button>
+                          <button type="submit"  id="UnitSave2" class="btn btn btn-outline-warning submit ">Add</button>
                       </form>
               
               
@@ -1536,8 +1536,8 @@ li{
                             </div><br><br><br><br><br>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <input class="btn btn-warning" type="submit" value="Save" id="newaccountsave" style="width: 100px;height: 40px;">
-                                    <input class="btn btn-light ml-3" type="reset" value="Cancel" style="width: 100px;height: 40px;">
+                                    <input class="btn btn-outline-warning" type="submit" value="Save" id="newaccountsave" style="width: 100px;height: 40px;">
+                                    <input class="btn btn-outline-warning ml-3" type="reset" value="Cancel" style="width: 100px;height: 40px;">
                                 </div>
                             </div>
                     </div>

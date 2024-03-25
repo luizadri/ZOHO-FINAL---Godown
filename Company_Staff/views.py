@@ -706,7 +706,7 @@ def list_godown(request):
             'godown_obj':godown_obj
             }
 
-        return render(request, 'godown/godown_list.html', context)
+        return render(request, 'zohomodules/godown/godown_list.html', context)
     
 def add_godown(request):
 
@@ -747,7 +747,7 @@ def add_godown(request):
             'accounts':accounts
             }
 
-        return render(request, 'godown/add_godown.html', context)
+        return render(request, 'zohomodules/godown/add_godown.html', context)
     
 def add_godown_func(request):
 
@@ -866,7 +866,7 @@ def overview_page(request,pk):
             'comment':comment
             }
 
-        return render(request, 'godown/overview_page.html', context)
+        return render(request, 'zohomodules/godown/overview_page.html', context)
 
 def edit_godown(request,pk):
 
@@ -911,7 +911,7 @@ def edit_godown(request,pk):
             'godown_obj':godown_obj
             }
 
-        return render(request, 'godown/edit_godown.html', context)
+        return render(request, 'zohomodules/godown/edit_godown.html', context)
     
 def edit_godown_func(request):
 
@@ -988,9 +988,6 @@ def edit_godown_func(request):
         messages.success(request,'Edited Successfully')
         return redirect('list_godown')
     
-def newitem(request):
-
-    return render(request,'godown/try.html')
 
 
 def change_status(request, pk):
