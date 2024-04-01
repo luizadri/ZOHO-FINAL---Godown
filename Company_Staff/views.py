@@ -690,6 +690,7 @@ def list_godown(request):
             context = {
             'details': dash_details,
             'log_details':log_details,
+            'allmodules':allmodules,
             'dash_details':dash_details,
             'godown_obj':godown_obj
             }
@@ -842,6 +843,7 @@ def overview_page(request,pk):
             'details': dash_details,
             'log_details':log_details,
             'dash_details':dash_details,
+            'allmodules':allmodules,
             'godown_obj':godown_obj,
             'p':p,
             'godown_history':godown_history,
@@ -858,6 +860,7 @@ def overview_page(request,pk):
             context = {
             'details': dash_details,
             'log_details':log_details,
+            'allmodules':allmodules,
             'dash_details':dash_details,
             'allmodules':allmodules,
             'godown_obj':godown_obj,
